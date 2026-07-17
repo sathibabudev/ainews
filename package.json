@@ -1,0 +1,13 @@
+{
+  "name": "daily-ai-news",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Daily AI news static site generated via the OpenAI API and published with GitHub Pages.",
+  "scripts": {
+    "generate": "node scripts/generate.mjs && node scripts/prune.mjs"
+  },
+  "dependencies": {
+    "openai": "^6.48.0"
+  }
+}
