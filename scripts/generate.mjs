@@ -15,6 +15,15 @@ import OpenAI from "openai";
 // Change this constant when a newer default model alias becomes available.
 const MODEL = "gpt-4o";
 
+// Forces raw-markup-only output — without this the model tends to narrate
+// ("Here's your dashboard...") instead of returning an actual HTML document.
+const SYSTEM_INSTRUCTIONS =
+  "You are a code generator, not a conversational assistant. Respond with " +
+  "nothing but a single valid, self-contained HTML document satisfying the " +
+  "user's request. Do not include commentary, explanations, questions, or " +
+  "markdown code fences. Your response must start with '<!doctype html>' " +
+  "and end with '</html>' and nothing else.";
+
 const ROOT = path.resolve(import.meta.dirname, "..");
 const PROMPT_PATH = path.join(ROOT, "prompt.md");
 const DOCS_DIR = path.join(ROOT, "docs");
@@ -27,10 +36,23 @@ function todayUtc() {
 }
 
 // The model is asked for a full HTML document but sometimes wraps it in a
-// ```html ... ``` fence anyway — strip that if present.
+// ```html ... ``` fence, or adds stray commentary before/after — strip both.
+// Throws if the response doesn't actually contain an HTML document, so a
+// conversational non-HTML reply fails the build instead of publishing as-is.
 function extractHtml(text) {
   const fenced = text.match(/```(?:html)?\s*([\s\S]*?)```/i);
-  return (fenced ? fenced[1] : text).trim();
+  const candidate = (fenced ? fenced[1] : text).trim();
+
+  const start = candidate.search(/<!doctype html/i);
+  const end = candidate.search(/<\/html\s*>/i);
+  if (start === -1 || end === -1) {
+    throw new Error(
+      "OpenAI response did not contain a full HTML document (found no <!doctype html>...</html>) " +
+        "— refusing to publish a broken page."
+    );
+  }
+
+  return candidate.slice(start, end + "</html>".length);
 }
 
 // Add a nav link so every generated page can reach the archive/homepage,
@@ -60,6 +82,7 @@ async function main() {
 
   const response = await client.responses.create({
     model: MODEL,
+    instructions: SYSTEM_INSTRUCTIONS,
     tools: [{ type: "web_search" }],
     input: prompt,
   });
