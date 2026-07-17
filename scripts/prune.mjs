@@ -1,7 +1,8 @@
 // scripts/prune.mjs
 //
 // Deletes docs/news/<date>.html files older than 90 days and regenerates
-// docs/index.html to list whatever remains, newest first.
+// docs/archive.html to list whatever remains, newest first. (docs/index.html
+// is the homepage and is written separately by generate.mjs.)
 //
 // Run locally with:
 //   node scripts/prune.mjs
@@ -52,7 +53,7 @@ async function pruneOldFiles(files) {
   return kept;
 }
 
-function renderIndex(files) {
+function renderArchive(files) {
   const items = files
     .map(
       (f) => `      <li><a href="news/${f.name}">${f.date}</a></li>`
@@ -110,6 +111,7 @@ function renderIndex(files) {
 <body>
   <h1>AI News Archive</h1>
   <div class="subtitle">Last ${RETENTION_DAYS} days</div>
+  <a href="index.html" style="display:inline-block;margin-bottom:1.5rem;">&larr; Back to today</a>
   ${listHtml}
 </body>
 </html>
@@ -120,11 +122,11 @@ async function main() {
   const allFiles = await listDatedFiles();
   const keptFiles = await pruneOldFiles(allFiles);
 
-  const indexHtml = renderIndex(keptFiles);
+  const archiveHtml = renderArchive(keptFiles);
   await mkdir(DOCS_DIR, { recursive: true });
-  await writeFile(path.join(DOCS_DIR, "index.html"), indexHtml, "utf8");
+  await writeFile(path.join(DOCS_DIR, "archive.html"), archiveHtml, "utf8");
 
-  console.log(`Rebuilt docs/index.html with ${keptFiles.length} entr${keptFiles.length === 1 ? "y" : "ies"}.`);
+  console.log(`Rebuilt docs/archive.html with ${keptFiles.length} entr${keptFiles.length === 1 ? "y" : "ies"}.`);
 }
 
 main().catch((err) => {

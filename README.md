@@ -9,8 +9,10 @@ than 90 days.
   markdown. Edit this with your own content, keeping the "output a full HTML page" instruction
   if you want the same behavior.
 - `scripts/generate.mjs` — calls the OpenAI Responses API (with the `web_search` tool) and
-  writes `docs/news/<YYYY-MM-DD>.html`.
-- `scripts/prune.mjs` — deletes pages older than 90 days and rebuilds `docs/index.html`.
+  writes today's dashboard to both `docs/index.html` (the homepage) and
+  `docs/news/<YYYY-MM-DD>.html` (the dated archive copy).
+- `scripts/prune.mjs` — deletes dated pages older than 90 days and rebuilds `docs/archive.html`
+  (the list of past dates, linked from the homepage).
 - `.github/workflows/daily-news.yml` — runs both scripts once a day and commits the result.
 
 ## Setup
@@ -51,8 +53,8 @@ building these expressions.
 
 1. Go to the **Actions** tab → **Daily AI News** workflow.
 2. Click **Run workflow** (this uses the `workflow_dispatch` trigger).
-3. Once it finishes, check that `docs/news/<today>.html` and `docs/index.html` were committed,
-   and that your Pages site shows the new entry.
+3. Once it finishes, check that `docs/index.html`, `docs/news/<today>.html`, and
+   `docs/archive.html` were committed, and that your Pages site shows the new dashboard.
 
 ## Local testing
 
@@ -62,7 +64,7 @@ OPENAI_API_KEY=sk-... npm run generate
 ```
 
 This runs `generate.mjs` followed by `prune.mjs`, exactly like the workflow does. Check the
-output in `docs/news/` and `docs/index.html` before pushing.
+output in `docs/index.html`, `docs/news/`, and `docs/archive.html` before pushing.
 
 ## Notes
 
