@@ -1,50 +1,140 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AI News</title>
-<style>
-  :root {
-    color-scheme: light dark;
-  }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 1.5rem 1.25rem 4rem;
-    line-height: 1.6;
-    color: #1a1a1a;
-    background: #fff;
-  }
-  @media (prefers-color-scheme: dark) {
-    body { color: #e6e6e6; background: #111; }
-    a { color: #6db3f2; }
-  }
-  h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
-  .subtitle { color: #666; font-size: 0.95rem; margin-bottom: 2rem; }
-  ul { list-style: none; padding: 0; }
-  li { margin-bottom: 0.6rem; }
-  a {
-    color: #0969da;
-    text-decoration: none;
-    display: inline-block;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  a:hover { background: #f6f8fa; }
-  @media (prefers-color-scheme: dark) {
-    a { border-color: #333; }
-    a:hover { background: #1c1c1c; }
-  }
-</style>
+  <meta charset="utf-8">
+  <title>AI Trends Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f7f9; color: #333; }
+    header { margin-bottom: 20px; }
+    .toggle { margin-bottom: 20px; }
+    .toggle button { padding: 10px 20px; margin-right: 10px; border: none; background: #e0e4e8; cursor: pointer; border-radius: 4px; }
+    .toggle button.active { background: #5c9ded; color: white; }
+    .section { margin-bottom: 40px; }
+    .cards { display: flex; flex-wrap: wrap; gap: 20px; }
+    .card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 15px; width: 300px; }
+    .card h3 { margin-top: 0; }
+    .summary { background: #eef6fb; border-left: 4px solid #5c9ded; padding: 10px; margin-bottom: 20px; }
+  </style>
 </head>
 <body>
-  <h1>AI News</h1>
-  <div class="subtitle">Headlines, Top AI Agents, and Top AI Repos Trending</div>
-  <p>No dashboard yet — check back after the first scheduled run, or trigger the workflow manually.</p>
+  <header>
+    <h1>AI Trends Dashboard</h1>
+    <p>Time range: last 30 days • Generated: July 17, 2026</p>
+    <div class="summary">
+      <strong>Top Takeaways:</strong> Multiple frontier models released by OpenAI, Meta, Anthropic; record AI funding rounds; AI agents gaining enterprise traction; GitHub sees rapid momentum in agentic repositories like openinterpreter and agency‑agents.
+    </div>
+    <div class="toggle">
+      <button class="active">30 days</button><button>15 days</button><button>10 days</button>
+    </div>
+  </header>
+
+  <div class="section">
+    <h2>LATEST AI NEWS</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Thinking Machines debuts first model “Inkling”</h3>
+        <p>Thinking Machines’ first foundational model release, Inkling, arrives after its $2B seed raise.</p>
+        <p><em>Jul 15, 2026 — Axios</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>OpenAI launches GPT‑5.6 family (Sol, Terra, Luna)</h3>
+        <p>New GPT‑5.6 models with 1M‑token context, tiers for speed, cost, and reasoning.</p>
+        <p><em>Jul 9, 2026 — ThursdAI / oltre sources</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>Meta releases Muse Spark 1.1 and paid API</h3>
+        <p>Meta introduces Muse Spark 1.1, a 1M‑token agentic model with a developer API.</p>
+        <p><em>Jul 9, 2026 — ThursdAI / Axios</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>Prime Intellect raises $130M Series A</h3>
+        <p>Startup enabling enterprises to build agentic systems raises $130M at $1B valuation.</p>
+        <p><em>Jul 8, 2026 — TechCrunch</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>Q2 AI funding hits $47.2B</h3>
+        <p>Q2 2026 AI funding grew 23% QoQ; mega‑rounds across xAI, Anthropic, Databricks, others.</p>
+        <p><em>Jul 3, 2026 — BizThriveAI</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>U.S. government limits GPT‑5.6 release</h3>
+        <p>Washington requests OpenAI restrict GPT‑5.6 access initially to approved partners.</p>
+        <p><em>Jun 25, 2026 — Axios</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>TRENDING AI AGENTS</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>OpenClaw</h3>
+        <p>An open‑source autonomous AI agent usable via messaging platforms; gaining popularity.</p>
+        <p><em>Growing traction noted by Tom’s Guide / Wikipedia</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>LangChain & Graph-based Agent Frameworks</h3>
+        <p>Tools for agent orchestration and graph‑powered reasoning gaining enterprise attention.</p>
+        <p><em>Plushcap report, April/July 2026</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>Developer‑centric coding agents</h3>
+        <p>CLI tools and coding assistants dominating real adoption trends versus “autonomous” agents.</p>
+        <p><em>Reddit observations & industry reports</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>Agent deployments remain monitored</h3>
+        <p>Survey shows 59% of developers use agents, but 63% rarely let them run unsupervised.</p>
+        <p><em>May 27, 2026 — Stack Overflow</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>TRENDING AI GITHUB REPOS</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>openinterpreter</h3>
+        <p>Coding agent for open models (e.g., Kimi K3); high star growth recently.</p>
+        <p><em>Rust language — 66K stars, +5.6K today</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>agency‑agents</h3>
+        <p>Specialized AI agent personalities for coding environments.</p>
+        <p><em>Shell — 120K stars, +1.8K today</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>video‑use</h3>
+        <p>Python tool to automate video editing via coding agents like Claude Code.</p>
+        <p><em>12.5K stars, +721 today</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>ai‑berkshire</h3>
+        <p>Multi‑agent value investing simulation framework.</p>
+        <p><em>Python — 7.5K stars, +969 today</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>agents‑cli</h3>
+        <p>Google Cloud CLI toolkit to build, evaluate, and deploy AI agents.</p>
+        <p><em>Python — 4.1K stars, +445 today</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+    </div>
+  </div>
+<a href="archive.html" style="display:inline-block;margin:2rem 0;">&larr; View archive</a>
 </body>
 </html>

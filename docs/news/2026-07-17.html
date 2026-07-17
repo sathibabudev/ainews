@@ -1,114 +1,140 @@
-Here’s your interactive HTML dashboard—freshly generated on **July 17 2026**, covering AI trends published within the past **30 days** (i.e., from **June 17 2026** onward).
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AI Trends Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f7f9; color: #333; }
+    header { margin-bottom: 20px; }
+    .toggle { margin-bottom: 20px; }
+    .toggle button { padding: 10px 20px; margin-right: 10px; border: none; background: #e0e4e8; cursor: pointer; border-radius: 4px; }
+    .toggle button.active { background: #5c9ded; color: white; }
+    .section { margin-bottom: 40px; }
+    .cards { display: flex; flex-wrap: wrap; gap: 20px; }
+    .card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 15px; width: 300px; }
+    .card h3 { margin-top: 0; }
+    .summary { background: #eef6fb; border-left: 4px solid #5c9ded; padding: 10px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AI Trends Dashboard</h1>
+    <p>Time range: last 30 days • Generated: July 17, 2026</p>
+    <div class="summary">
+      <strong>Top Takeaways:</strong> Multiple frontier models released by OpenAI, Meta, Anthropic; record AI funding rounds; AI agents gaining enterprise traction; GitHub sees rapid momentum in agentic repositories like openinterpreter and agency‑agents.
+    </div>
+    <div class="toggle">
+      <button class="active">30 days</button><button>15 days</button><button>10 days</button>
+    </div>
+  </header>
 
-Top Takeaways  
-- Funding activity in July shows major investments across AI-native infrastructure, enterprise sales tools, autonomous crime detection, and 3D/agentic platforms. ([unite.ai](https://www.unite.ai/?utm_source=openai))  
-- AI Agents continue to dominate both industry and coding ecosystems—Microsoft’s AutoGen framework, OpenClaw’s real-world traction, and DeepMind’s security prep signal widening maturity and adoption. ([techradar.com](https://www.techradar.com/pro/50-microsoft-tools-you-can-use-for-free-just-in-time-for-build-2026?utm_source=openai))  
-- GitHub shows strong momentum in agent-related projects: agency‑agents, OpenClaw forks, and Meetily’s local AI meeting assistant appear among fastest-growing. ([github-trending-history.vercel.app](https://github-trending-history.vercel.app/en/topics/ai-agents?utm_source=openai))  
+  <div class="section">
+    <h2>LATEST AI NEWS</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Thinking Machines debuts first model “Inkling”</h3>
+        <p>Thinking Machines’ first foundational model release, Inkling, arrives after its $2B seed raise.</p>
+        <p><em>Jul 15, 2026 — Axios</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>OpenAI launches GPT‑5.6 family (Sol, Terra, Luna)</h3>
+        <p>New GPT‑5.6 models with 1M‑token context, tiers for speed, cost, and reasoning.</p>
+        <p><em>Jul 9, 2026 — ThursdAI / oltre sources</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>Meta releases Muse Spark 1.1 and paid API</h3>
+        <p>Meta introduces Muse Spark 1.1, a 1M‑token agentic model with a developer API.</p>
+        <p><em>Jul 9, 2026 — ThursdAI / Axios</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>Prime Intellect raises $130M Series A</h3>
+        <p>Startup enabling enterprises to build agentic systems raises $130M at $1B valuation.</p>
+        <p><em>Jul 8, 2026 — TechCrunch</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>Q2 AI funding hits $47.2B</h3>
+        <p>Q2 2026 AI funding grew 23% QoQ; mega‑rounds across xAI, Anthropic, Databricks, others.</p>
+        <p><em>Jul 3, 2026 — BizThriveAI</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>U.S. government limits GPT‑5.6 release</h3>
+        <p>Washington requests OpenAI restrict GPT‑5.6 access initially to approved partners.</p>
+        <p><em>Jun 25, 2026 — Axios</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+    </div>
+  </div>
 
-Time-range toggle: [10 days] [15 days] **[30 days]**
+  <div class="section">
+    <h2>TRENDING AI AGENTS</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>OpenClaw</h3>
+        <p>An open‑source autonomous AI agent usable via messaging platforms; gaining popularity.</p>
+        <p><em>Growing traction noted by Tom’s Guide / Wikipedia</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>LangChain & Graph-based Agent Frameworks</h3>
+        <p>Tools for agent orchestration and graph‑powered reasoning gaining enterprise attention.</p>
+        <p><em>Plushcap report, April/July 2026</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>Developer‑centric coding agents</h3>
+        <p>CLI tools and coding assistants dominating real adoption trends versus “autonomous” agents.</p>
+        <p><em>Reddit observations & industry reports</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>Agent deployments remain monitored</h3>
+        <p>Survey shows 59% of developers use agents, but 63% rarely let them run unsupervised.</p>
+        <p><em>May 27, 2026 — Stack Overflow</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+    </div>
+  </div>
 
-Header  
-Time Range: 30 days (June 17–July 17 2026) | Generated: July 17 2026  
-
-Section 1: LATEST AI NEWS  
-Cards (ranked by recency & significance):
-
-• Velocity Raises $27M to Build Monetization Infrastructure for AI‑Native Software  
- One‑line summary: Velocity secured a $27 million funding round to build backend tools for monetizing AI-native applications.  
- Source: Unite.AI, July 9 2026 ([unite.ai](https://www.unite.ai/?utm_source=openai))  
-
-• Pearl Health Raises $110M to Scale AI Platform for Value‑Based Medicare Care  
- One‑line summary: Pearl Health closed $110 million to expand its AI platform tailored to value-based Medicare services.  
- Source: Unite.AI, July 8 2026 ([unite.ai](https://www.unite.ai/?utm_source=openai))  
-
-• Alta Raises $25M Series A for AI‑Native Operating Layer for Revenue Teams  
- One‑line summary: Alta raised $25 million in Series A to build an AI-native operational layer serving revenue organizations.  
- Source: Unite.AI, July 7 2026 ([unite.ai](https://www.unite.ai/?utm_source=openai))  
-
-• Tangos Raises $20M Seed at $100M Valuation to Bring Autonomous AI to Financial Crime Investigations  
- One‑line summary: Tangos secured $20 million seed funding (valuation: $100 million) to deploy autonomous AI in financial crime detection.  
- Source: Unite.AI, July 2 2026 ([unite.ai](https://www.unite.ai/?utm_source=openai))  
-
-• Tripo AI Raises $150M Series A3 as 3D Foundation Models Move Toward Interactive Worlds  
- One‑line summary: Tripo AI attracted a $150 million Series A3 round, pushing 3D foundation models into interactive environments.  
- Source: Unite.AI, July 1 2026 ([unite.ai](https://www.unite.ai/?utm_source=openai))  
-
-• Aligned Raises $60M Series B to Expand Its AI Deal Workspace for Enterprise Sales  
- One‑line summary: Aligned closed a $60 million Series B to scale its AI-powered deal workspace for enterprise sales professionals.  
- Source: Unite.AI, July 1 2026 ([unite.ai](https://www.unite.ai/?utm_source=openai))  
-
-• Google DeepMind Prepares for Rogue AI Agents  
- One‑line summary: DeepMind is building layered AI supervision to prevent rogue autonomous agents from misbehaving.  
- Source: Axios, June 18 2026 ([axios.com](https://www.axios.com/2026/06/18/google-deepmind-prepares-for-rogue-ai-agents?utm_source=openai))  
-
-• AI Agents Are Driving the Next Phase of SaaS  
- One‑line summary: Technical analysis argues AI agents enable automation that could render traditional SaaS models redundant.  
- Source: TechRadar Pro, July 9 2026 ([techradar.com](https://www.techradar.com/pro/ai-agents-arent-the-end-of-saas-theyre-driving-its-next-phase-of-growth?utm_source=openai))  
-
-Section 2: TRENDING AI AGENTS  
-Ranked by current traction and demand:
-
-• OpenClaw  
- What it does: Autonomous assistant “brain” for multitasking across devices.  
- Why attention: Tops the Agent Reality Index (73.1/100) for real-world demand (381k GitHub stars, 170k monthly searches).  
- Link: Agent Reality Index (report updated July 1 2026) ([getreadyforagents.com](https://www.getreadyforagents.com/agentindex/autonomous-assistants/?utm_source=openai))  
-
-• Browser Use  
- What it does: Agentic tool for automating video editing tasks (cuts, color grading, subtitles).  
- Why attention: Ranks highly (#3) in Agent Reality Index; growing GitHub stars.  
- Link: Agent Reality Index ([getreadyforagents.com](https://www.getreadyforagents.com/agentindex/autonomous-assistants/?utm_source=openai))  
-
-• AutoGen (Microsoft)  
- What it does: Open-source multi-agent framework supporting tool use, human checkpoints, and agent-to-agent communication.  
- Why attention: Featured by Microsoft at Build 2026 as a widely adopted production-ready agent toolkit.  
- Link: TechRadar Pro article ([techradar.com](https://www.techradar.com/pro/50-microsoft-tools-you-can-use-for-free-just-in-time-for-build-2026?utm_source=openai))  
-
-• General Agent Framework discussion  
- What it does: Community conversation emphasizing practical, narrow workflows over full autonomous frameworks (“Flows > crews”).  
- Why attention: Indicates enterprise focus and maturity of agent design strategies.  
- Link: Reddit discussion dated July 13 2026 ([reddit.com](https://www.reddit.com/r/aiagents/comments/1uv3gxc/best_agent_framework_in_2026_there_isnt_one_heres/?utm_source=openai))  
-
-Section 3: TRENDING AI GITHUB REPOS  
-Compiled from trending metrics and star velocity:
-
-• msitarzewski/agency-agents  
- Description: Shell toolkit of specialized agent personalities for coding environments.  
- Stars: ~120,829, +1,791 today. Language: Shell.  
- Link: GitHub Trending AI Agents list ([github-trending-history.vercel.app](https://github-trending-history.vercel.app/en/topics/ai-agents?utm_source=openai))  
-
-• browser-use/video-use  
- Description: Python tool that automates video editing via coding agents like Claude.  
- Stars: ~12,569, +721 today. Language: Python.  
- Link: GitHub Trending AI Agents list ([github-trending-history.vercel.app](https://github-trending-history.vercel.app/en/topics/ai-agents?utm_source=openai))  
-
-• xbtlin/ai-berkshire  
- Description: Python multi-agent framework simulating value investing masters.  
- Stars: ~7,469, +969 today. Language: Python.  
- Link: GitHub Trending AI Agents list ([github-trending-history.vercel.app](https://github-trending-history.vercel.app/en/topics/ai-agents?utm_source=openai))  
-
-• google/agents-cli  
- Description: Python CLI toolkit for building, evaluating, and deploying AI agents on Google Cloud.  
- Stars: ~4,165, +445 today. Language: Python.  
- Link: GitHub Trending AI Agents list ([github-trending-history.vercel.app](https://github-trending-history.vercel.app/en/topics/ai-agents?utm_source=openai))  
-
-• ai-job-search (MadsLorentzen)  
- Description: AI-powered resume builder and job application assistant using Claude Code.  
- Stars gained: ~16.4k this month. Language: unspecified (likely Python/JS).  
- Link: Trendshift monthly trending repos ([trendshift.io](https://trendshift.io/monthly?utm_source=openai))  
-
-• usestrix/strix  
- Description: Open-source AI penetration testing tool.  
- Stars gained: ~11.9k this month.  
- Link: Trendshift ([trendshift.io](https://trendshift.io/monthly?utm_source=openai))  
-
-• Meetily (Zackriya‑Solutions/meetily)  
- Description: Rust-based, self‑hosted AI meeting assistant with faster transcription and summarization (Parakeet/Whisper + Ollama).  
- Stars gained: ~9.5k this month.  
- Link: Trendshift ([trendshift.io](https://trendshift.io/monthly?utm_source=openai))  
-
-Dashboard Notes  
-- All items published or trending within June 17–July 17 2026.  
-- Sources prioritized: technical press, funding reports, first-party analytics, community insights, GitHub data.  
-- Where data was ambiguous or potentially outdated, no assumptions were made.  
-- Let me know if you'd like the 10-day or 15-day view instead—or additional filtering by category or region!
-<a href="../index.html" style="display:inline-block;margin:2rem 0;">&larr; Back to archive</a>
+  <div class="section">
+    <h2>TRENDING AI GITHUB REPOS</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>openinterpreter</h3>
+        <p>Coding agent for open models (e.g., Kimi K3); high star growth recently.</p>
+        <p><em>Rust language — 66K stars, +5.6K today</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>agency‑agents</h3>
+        <p>Specialized AI agent personalities for coding environments.</p>
+        <p><em>Shell — 120K stars, +1.8K today</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>video‑use</h3>
+        <p>Python tool to automate video editing via coding agents like Claude Code.</p>
+        <p><em>12.5K stars, +721 today</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>ai‑berkshire</h3>
+        <p>Multi‑agent value investing simulation framework.</p>
+        <p><em>Python — 7.5K stars, +969 today</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+      <div class="card">
+        <h3>agents‑cli</h3>
+        <p>Google Cloud CLI toolkit to build, evaluate, and deploy AI agents.</p>
+        <p><em>Python — 4.1K stars, +445 today</em></p>
+        <p><a href="#" target="_blank">source</a></p>
+      </div>
+    </div>
+  </div>
+<a href="../archive.html" style="display:inline-block;margin:2rem 0;">&larr; Back to archive</a>
+</body>
+</html>
