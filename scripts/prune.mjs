@@ -9,6 +9,7 @@
 
 import { readdir, unlink, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
+import { escapeHtml, renderShell } from "./theme.mjs";
 
 const RETENTION_DAYS = 90;
 
@@ -55,67 +56,21 @@ async function pruneOldFiles(files) {
 
 function renderArchive(files) {
   const items = files
-    .map(
-      (f) => `      <li><a href="news/${f.name}">${f.date}</a></li>`
-    )
+    .map((f) => `        <li><a href="news/${f.name}">${escapeHtml(f.date)}</a></li>`)
     .join("\n");
 
   const listHtml = files.length
-    ? `<ul>\n${items}\n    </ul>`
-    : `<p>No entries yet — check back after the next scheduled run.</p>`;
+    ? `<ul class="archive-list">\n${items}\n      </ul>`
+    : `<div class="empty">No entries yet — check back after the next scheduled run.</div>`;
 
-  return `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AI News Archive</title>
-<style>
-  :root {
-    color-scheme: light dark;
-  }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 1.5rem 1.25rem 4rem;
-    line-height: 1.6;
-    color: #1a1a1a;
-    background: #fff;
-  }
-  @media (prefers-color-scheme: dark) {
-    body { color: #e6e6e6; background: #111; }
-    a { color: #6db3f2; }
-  }
-  h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
-  .subtitle { color: #666; font-size: 0.95rem; margin-bottom: 2rem; }
-  ul { list-style: none; padding: 0; }
-  li { margin-bottom: 0.6rem; }
-  a {
-    color: #0969da;
-    text-decoration: none;
-    display: inline-block;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  a:hover { background: #f6f8fa; }
-  @media (prefers-color-scheme: dark) {
-    a { border-color: #333; }
-    a:hover { background: #1c1c1c; }
-  }
-</style>
-</head>
-<body>
-  <h1>AI News Archive</h1>
-  <div class="subtitle">Last ${RETENTION_DAYS} days</div>
-  <a href="index.html" style="display:inline-block;margin-bottom:1.5rem;">&larr; Back to today</a>
-  ${listHtml}
-</body>
-</html>
-`;
+  return renderShell({
+    title: "AI News Archive",
+    eyebrow: `Last ${RETENTION_DAYS} days`,
+    heading: "AI News Archive",
+    subtitle: `${files.length} past dashboard${files.length === 1 ? "" : "s"}.`,
+    navHtml: `<a class="nav-link" href="index.html">&larr; Back to today</a>`,
+    bodyHtml: `<section class="group">${listHtml}</section>`,
+  });
 }
 
 async function main() {

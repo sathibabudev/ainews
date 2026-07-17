@@ -1,10 +1,33 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AI News Archive</title>
-<style>
+// scripts/theme.mjs
+//
+// Shared HTML/CSS shell used by generate.mjs and prune.mjs so every page in
+// the site (dashboard, dated archive copies, archive index) looks the same
+// and every link is a real <a href> — never markdown-style "([text](url))"
+// text that renders as plain, unclickable text.
+
+export function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  }[c]));
+}
+
+// Only allow http(s) links through — refuses javascript: and other schemes
+// a model response could (accidentally or not) hand back.
+export function safeUrl(value) {
+  try {
+    const u = new URL(String(value));
+    if (u.protocol === "http:" || u.protocol === "https:") return u.toString();
+  } catch {
+    // fall through
+  }
+  return "#";
+}
+
+export const BASE_STYLES = `
   :root {
     color-scheme: light dark;
     --bg: #f4f5fb;
@@ -135,25 +158,34 @@
     transition: transform .15s ease, border-color .15s ease;
   }
   .archive-list a:hover { transform: translateX(3px); border-color: var(--accent); }
-  .archive-list a::after { content: "\2192"; color: var(--accent); }
+  .archive-list a::after { content: "\\2192"; color: var(--accent); }
   footer.page-footer {
     margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--surface-border);
     color: var(--text-muted); font-size: .85rem;
   }
-</style>
+`;
+
+export function renderShell({ title, eyebrow, heading, subtitle, bodyHtml, navHtml }) {
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>${escapeHtml(title)}</title>
+<style>${BASE_STYLES}</style>
 </head>
 <body>
   <div class="page">
     <div class="hero">
-      <div class="eyebrow">Last 90 days</div>
-      <h1>AI News Archive</h1>
-      <p class="subtitle">1 past dashboard.</p>
-      <a class="nav-link" href="index.html">&larr; Back to today</a>
+      ${eyebrow ? `<div class="eyebrow">${eyebrow}</div>` : ""}
+      <h1>${escapeHtml(heading)}</h1>
+      ${subtitle ? `<p class="subtitle">${subtitle}</p>` : ""}
+      ${navHtml ?? ""}
     </div>
-    <section class="group"><ul class="archive-list">
-        <li><a href="news/2026-07-17.html">2026-07-17</a></li>
-      </ul></section>
+    ${bodyHtml}
     <footer class="page-footer">Generated automatically by the Daily AI News pipeline.</footer>
   </div>
 </body>
 </html>
+`;
+}

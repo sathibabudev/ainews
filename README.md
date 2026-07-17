@@ -4,13 +4,19 @@ A static site that generates a fresh AI-news dashboard every day using the OpenA
 web search enabled, publishes it via GitHub Pages, and automatically prunes anything older
 than 90 days.
 
-- `prompt.md` — the prompt sent to the model each day. It asks for a self-contained HTML
-  dashboard back, so `generate.mjs` writes the model's output directly rather than converting
-  markdown. Edit this with your own content, keeping the "output a full HTML page" instruction
-  if you want the same behavior.
-- `scripts/generate.mjs` — calls the OpenAI Responses API (with the `web_search` tool) and
-  writes today's dashboard to both `docs/index.html` (the homepage) and
+- `prompt.md` — the prompt sent to the model each day, asking it to research three sections
+  (news, agents, repos) and return plain-text fields (no markdown). Edit this with your own
+  content/topics.
+- `scripts/generate.mjs` — calls the OpenAI Responses API (with the `web_search` tool),
+  constrained to a strict JSON schema (`RESPONSE_SCHEMA`) so the model returns structured data
+  — titles, summaries, and a real URL per item — instead of a full HTML/markdown document. The
+  script then renders that JSON into HTML itself, so every link becomes a real `<a href>` that
+  actually works, rather than markdown-style `([text](url))` text that shows up unclickable.
+  Writes today's dashboard to both `docs/index.html` (the homepage) and
   `docs/news/<YYYY-MM-DD>.html` (the dated archive copy).
+- `scripts/theme.mjs` — the shared HTML shell/CSS and `escapeHtml`/`safeUrl` helpers used by
+  both `generate.mjs` and `prune.mjs`, so every page shares one look and untrusted model output
+  is always escaped and URL-validated before being written into the page.
 - `scripts/prune.mjs` — deletes dated pages older than 90 days and rebuilds `docs/archive.html`
   (the list of past dates, linked from the homepage).
 - `.github/workflows/daily-news.yml` — runs both scripts once a day and commits the result.
@@ -33,10 +39,10 @@ than 90 days.
 
 ### 3. Add your prompt
 
-Open `prompt.md` and replace its contents with whatever prompt you want sent each day. If your
-prompt asks for a full HTML page back (as the default one does), `generate.mjs` writes that
-output as-is; if you'd rather write a plain-text/markdown prompt, you'll need to add a markdown
-renderer back into `generate.mjs` since it no longer includes one.
+Open `prompt.md` and replace its contents with whatever research prompt you want sent each day.
+Keep the instruction to write plain text (no markdown) in every field — `generate.mjs` renders
+the model's JSON response into HTML itself, so markdown syntax in a field would show up as
+literal text on the page instead of formatting.
 
 ### 4. Change the daily run time (optional)
 
