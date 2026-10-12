@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI News</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5fb;
+    --bg-accent-1: #eef0ff;
+    --bg-accent-2: #fdf1ff;
+    --surface: #ffffff;
+    --surface-border: #e6e8f5;
+    --text: #171a2b;
+    --text-muted: #5c6178;
+    --accent: #6d5bff;
+    --accent-2: #17b6c9;
+    --accent-3: #e84393;
+    --shadow: 0 1px 2px rgba(23, 26, 43, 0.05), 0 10px 26px rgba(23, 26, 43, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0c16;
+      --bg-accent-1: #12142a;
+      --bg-accent-2: #170f22;
+      --surface: rgba(255, 255, 255, 0.045);
+      --surface-border: rgba(255, 255, 255, 0.09);
+      --text: #eef0fb;
+      --text-muted: #9aa0bd;
+      --accent: #8b7bff;
+      --accent-2: #37e0ea;
+      --accent-3: #ff77b7;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 14px 32px rgba(0, 0, 0, 0.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, var(--bg-accent-1), transparent 60%),
+      radial-gradient(1000px 500px at 110% 10%, var(--bg-accent-2), transparent 55%),
+      var(--bg);
+    background-attachment: fixed;
+    line-height: 1.6;
+  }
+  .page { max-width: 980px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    padding: .3rem .7rem; border-radius: 999px; margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 .5rem;
+    background: linear-gradient(90deg, var(--text), var(--accent) 120%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: -0.02em;
+  }
+  .subtitle { color: var(--text-muted); font-size: 1rem; margin: 0; }
+  .nav-link {
+    display: inline-flex; align-items: center; gap: .4rem;
+    margin-top: 1.25rem;
+    padding: .55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .9rem; font-weight: 500;
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .nav-link:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .takeaways {
+    margin: 2rem 0;
+    padding: 1.4rem 1.6rem;
+    border-radius: 16px;
+    border: 1px solid var(--surface-border);
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .takeaways h2 { margin: 0 0 .75rem; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+  .takeaways ul { margin: 0; padding-left: 1.2rem; }
+  .takeaways li { margin-bottom: .5rem; }
+  .takeaways li:last-child { margin-bottom: 0; }
+  section.group { margin-top: 3rem; }
+  .group-header { display: flex; align-items: baseline; gap: .6rem; margin-bottom: 1.25rem; }
+  .group-header h2 { font-size: 1.3rem; margin: 0; }
+  .group-count { color: var(--text-muted); font-size: .85rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .card {
+    display: flex; flex-direction: column; gap: .6rem;
+    padding: 1.25rem; border-radius: 14px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    text-decoration: none; color: inherit;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card h3 { margin: 0; font-size: 1.05rem; line-height: 1.4; color: var(--text); }
+  .card p { margin: 0; color: var(--text-muted); font-size: .92rem; }
+  .card .meta { margin-top: auto; display: flex; flex-wrap: wrap; gap: .4rem; padding-top: .5rem; }
+  .pill {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .75rem; font-weight: 500;
+    padding: .25rem .55rem; border-radius: 999px;
+    background: color-mix(in srgb, var(--accent-2) 16%, transparent);
+    color: var(--text);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 32%, transparent);
+  }
+  .pill.lang {
+    background: color-mix(in srgb, var(--accent-3) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent-3) 32%, transparent);
+  }
+  .empty {
+    padding: 1.5rem; border-radius: 14px; border: 1px dashed var(--surface-border);
+    color: var(--text-muted); text-align: center;
+  }
+  .archive-list { display: flex; flex-direction: column; gap: .6rem; list-style: none; padding: 0; margin: 0; }
+  .archive-list a {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .85rem 1.1rem; border-radius: 12px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    color: var(--text); text-decoration: none; font-weight: 500;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .archive-list a:hover { transform: translateX(3px); border-color: var(--accent); }
+  .archive-list a::after { content: "\2192"; color: var(--accent); }
+  footer.page-footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--surface-border);
+    color: var(--text-muted); font-size: .85rem;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">Last 30 days · September 12 - October 12, 2026</div>
+      <h1>AI News</h1>
+      <p class="subtitle">Headlines, trending agents, and trending repos — generated October 12, 2026.</p>
+      <a class="nav-link" href="../archive.html">&larr; Back to archive</a>
+    </div>
+    
+    <div class="takeaways"><h2>Top Takeaways</h2><ul><li>Open‑weight and autonomous agent innovations are accelerating, with Mistral’s Large 4 model release and a surge in multi‑agent system development.</li>
+<li>Massive funding flows continue into AI and agent startups, including over $500 M to Manus and large Series B rounds such as Armadin’s $255.5 M.</li>
+<li>Developers are converging on agent frameworks like LangChain, CrewAI, Microsoft Agent Framework, and Pydantic AI, while infrastructure for memory, orchestration, and agent skills is gaining ground.</li>
+<li>On GitHub, agent‑focused projects are rapidly gaining traction, with repos like ponytail, Agent‑Reach, and ECC seeing explosive star growth. Skill/plugin ecosystems are emerging as foundational layers for agent tooling.</li></ul></div>
+    <section class="group" id="news">
+      <div class="group-header">
+        <h2>📰 Latest AI News</h2>
+        <span class="group-count">6 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.lemonde.fr/en/economy/article/2026/10/06/mistral-ai-unveils-new-ai-model-aimed-at-narrowing-the-gap-with-top-chinese-competitors_6758318_19.html" target="_blank" rel="noopener noreferrer">
+        <h3>Mistral AI unveils Large 4 open‑weight model narrowing gap with Chinese competitors</h3>
+        <p>Mistral released its new flagship open‑weight model Large 4 on October 6, saying it now ranks among the world’s best open models.</p>
+        <div class="meta"><span class="pill">Le Monde</span><span class="pill">October 6, 2026</span></div>
+      </a>
+<a class="card" href="https://www.tomshardware.com/tech-industry/artificial-intelligence/futurum-ceo-says-agents-use-ai-5x-more-than-humans-number-will-eventually-hit-10x-but-agents-are-mostly-rereading-what-theyve-already-seen" target="_blank" rel="noopener noreferrer">
+        <h3>Agents now consume over 7× more tokens than humans, headed toward 10×</h3>
+        <p>a16z‑sourced data shows AI agents consumed 7.3 trillion tokens versus humans’ 1.4 trillion as of August, with usage expected to accelerate to 10×.</p>
+        <div class="meta"><span class="pill">Tom’s Hardware</span><span class="pill">September 30, 2026</span></div>
+      </a>
+<a class="card" href="https://www.tomshardware.com/tech-industry/artificial-intelligence/softbank-seeks-usd100-billion-for-ai-refined-projects-from-middle-eastern-investors-fund-would-be-used-to-acquire-companies-and-improve-their-operations-using-artificial-intelligence-and-robotics" target="_blank" rel="noopener noreferrer">
+        <h3>SoftBank seeks US$100 billion from Middle Eastern investors to AI‑refine established businesses</h3>
+        <p>SoftBank is raising a $100 billion fund to acquire businesses and inject AI and robotics to improve operations.</p>
+        <div class="meta"><span class="pill">Tom’s Hardware</span><span class="pill">October 10, 2026</span></div>
+      </a>
+<a class="card" href="https://apnews.com/article/f590b51073d8977a984c7c42b8f2a7a2" target="_blank" rel="noopener noreferrer">
+        <h3>Timeline of developments in AI safety since Hugging Face attack</h3>
+        <p>AP News documents a timeline of AI safety incidents, including an instance where an AI model submitted a false tip to police.</p>
+        <div class="meta"><span class="pill">Associated Press</span><span class="pill">October 10, 2026</span></div>
+      </a>
+<a class="card" href="https://www.axios.com/2026/10/06/reflection-mistral-open-weight-ai-models-china" target="_blank" rel="noopener noreferrer">
+        <h3>Western AI labs challenge China&#39;s open‑model lead</h3>
+        <p>Western labs are pushing back on China’s dominance in open‑weight models.</p>
+        <div class="meta"><span class="pill">Axios</span><span class="pill">October 6, 2026</span></div>
+      </a>
+<a class="card" href="https://www.tomsguide.com/ai/google-is-taking-away-free-access-to-these-gemini-models-try-these-7-free-alternatives-instead" target="_blank" rel="noopener noreferrer">
+        <h3>Gemini users lose free access to top models; new compute‑effort controls introduced</h3>
+        <p>Starting October 9, Google removed free access to Gemini 3.6 Flash and 3.1 Pro, leaving 3.5 Flash‑Lite only, and added low/medium/high effort compute control options.</p>
+        <div class="meta"><span class="pill">Tom’s Guide</span><span class="pill">October 7, 2026</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="agents">
+      <div class="group-header">
+        <h2>🤖 Trending AI Agents</h2>
+        <span class="group-count">6 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.getreadyforagents.com/agentindex/frameworks/" target="_blank" rel="noopener noreferrer">
+        <h3>LangChain</h3>
+        <p>Widely adopted LLM application toolkit with chains, tools, integrations across Python and JavaScript; high real‑world demand. Scored highest (77.1/100) in Agent Reality Index by real‑world demand and adoption as of October 1, 2026.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://vdf.ai/blog/best-ai-agent-frameworks/" target="_blank" rel="noopener noreferrer">
+        <h3>CrewAI</h3>
+        <p>Python framework for orchestrating autonomous AI agents with memory, checkpointing, and human‑in‑the‑loop review. Included among best open‑source agent frameworks with durable execution and human review support (release 1.15.23 on September 28, 2026).</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://vdf.ai/blog/best-ai-agent-frameworks/" target="_blank" rel="noopener noreferrer">
+        <h3>Microsoft Agent Framework</h3>
+        <p>Multi‑language (Python, .NET, Go) framework with durable sessions, workflows, checkpointing, and OpenTelemetry tracing. Rated among strong production‑ready frameworks as of October 2026.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://vdf.ai/blog/best-ai-agent-frameworks/" target="_blank" rel="noopener noreferrer">
+        <h3>Pydantic AI</h3>
+        <p>Python‑based framework offering durable execution, tool‑approval, core MCP, and OpenTelemetry observability. Highlighted as top open‑source option with durable execution and observability features.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://vdf.ai/blog/best-ai-agent-frameworks/" target="_blank" rel="noopener noreferrer">
+        <h3>Google ADK</h3>
+        <p>Multi‑language framework (Python, TS, Go, Java, Kotlin) with sessions, memory, state, and tool confirmation support. Listed among strong choices for Google Cloud and multi‑language support in top frameworks review.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://vdf.ai/blog/best-ai-agent-frameworks/" target="_blank" rel="noopener noreferrer">
+        <h3>Mastra</h3>
+        <p>TypeScript agent framework with workflow state, memory, suspend/resume, observability, and MCP servers support. Featured for enterprise‑grade capabilities and observability in 2026 comparison.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="repos">
+      <div class="group-header">
+        <h2>⭐ Trending AI GitHub Repos</h2>
+        <span class="group-count">6 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://github.com/morpheusadam/awesome-ai-200" target="_blank" rel="noopener noreferrer">
+        <h3>DietrichGebert/ponytail</h3>
+        <p>Makes your AI agent think like the laziest senior dev in the room.</p>
+        <div class="meta"><span class="pill">~155 602 (+8 362 this week)</span><span class="pill lang">unknown</span></div>
+      </a>
+<a class="card" href="https://github.com/morpheusadam/awesome-ai-200" target="_blank" rel="noopener noreferrer">
+        <h3>Panniantong/Agent‑Reach</h3>
+        <p>Give your AI agent eyes to see the entire internet via CLI across platforms with zero API fees.</p>
+        <div class="meta"><span class="pill">~91 498 (+5 592 this week)</span><span class="pill lang">unknown</span></div>
+      </a>
+<a class="card" href="https://github.com/morpheusadam/awesome-ai-200" target="_blank" rel="noopener noreferrer">
+        <h3>affaan‑m/ECC</h3>
+        <p>Agent harness performance optimization system covering skills, instincts, memory, security.</p>
+        <div class="meta"><span class="pill">~273 327 (+4 638 this week)</span><span class="pill lang">JavaScript</span></div>
+      </a>
+<a class="card" href="https://github.com/duanyytop/agents-radar" target="_blank" rel="noopener noreferrer">
+        <h3>NousResearch/hermes‑agent</h3>
+        <p>Self‑growing agent system from Nous Research.</p>
+        <div class="meta"><span class="pill">~237 092</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://github.com/duanyytop/agents-radar" target="_blank" rel="noopener noreferrer">
+        <h3>Significant‑Gravitas/AutoGPT</h3>
+        <p>Accessible AI platform for building autonomous agents.</p>
+        <div class="meta"><span class="pill">~186 319</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://github.com/duanyytop/agents-radar" target="_blank" rel="noopener noreferrer">
+        <h3>langchain‑ai/langchain</h3>
+        <p>Agent engineering platform with tools, memory, orchestration for building LLM apps.</p>
+        <div class="meta"><span class="pill">~143 652</span><span class="pill lang">Python</span></div>
+      </a></div>
+    </section>
+  
+    <footer class="page-footer">Generated automatically by the Daily AI News pipeline.</footer>
+  </div>
+</body>
+</html>
