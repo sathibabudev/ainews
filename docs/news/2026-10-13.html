@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI News</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5fb;
+    --bg-accent-1: #eef0ff;
+    --bg-accent-2: #fdf1ff;
+    --surface: #ffffff;
+    --surface-border: #e6e8f5;
+    --text: #171a2b;
+    --text-muted: #5c6178;
+    --accent: #6d5bff;
+    --accent-2: #17b6c9;
+    --accent-3: #e84393;
+    --shadow: 0 1px 2px rgba(23, 26, 43, 0.05), 0 10px 26px rgba(23, 26, 43, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0c16;
+      --bg-accent-1: #12142a;
+      --bg-accent-2: #170f22;
+      --surface: rgba(255, 255, 255, 0.045);
+      --surface-border: rgba(255, 255, 255, 0.09);
+      --text: #eef0fb;
+      --text-muted: #9aa0bd;
+      --accent: #8b7bff;
+      --accent-2: #37e0ea;
+      --accent-3: #ff77b7;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 14px 32px rgba(0, 0, 0, 0.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, var(--bg-accent-1), transparent 60%),
+      radial-gradient(1000px 500px at 110% 10%, var(--bg-accent-2), transparent 55%),
+      var(--bg);
+    background-attachment: fixed;
+    line-height: 1.6;
+  }
+  .page { max-width: 980px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    padding: .3rem .7rem; border-radius: 999px; margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 .5rem;
+    background: linear-gradient(90deg, var(--text), var(--accent) 120%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: -0.02em;
+  }
+  .subtitle { color: var(--text-muted); font-size: 1rem; margin: 0; }
+  .nav-link {
+    display: inline-flex; align-items: center; gap: .4rem;
+    margin-top: 1.25rem;
+    padding: .55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .9rem; font-weight: 500;
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .nav-link:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .takeaways {
+    margin: 2rem 0;
+    padding: 1.4rem 1.6rem;
+    border-radius: 16px;
+    border: 1px solid var(--surface-border);
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .takeaways h2 { margin: 0 0 .75rem; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+  .takeaways ul { margin: 0; padding-left: 1.2rem; }
+  .takeaways li { margin-bottom: .5rem; }
+  .takeaways li:last-child { margin-bottom: 0; }
+  section.group { margin-top: 3rem; }
+  .group-header { display: flex; align-items: baseline; gap: .6rem; margin-bottom: 1.25rem; }
+  .group-header h2 { font-size: 1.3rem; margin: 0; }
+  .group-count { color: var(--text-muted); font-size: .85rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .card {
+    display: flex; flex-direction: column; gap: .6rem;
+    padding: 1.25rem; border-radius: 14px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    text-decoration: none; color: inherit;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card h3 { margin: 0; font-size: 1.05rem; line-height: 1.4; color: var(--text); }
+  .card p { margin: 0; color: var(--text-muted); font-size: .92rem; }
+  .card .meta { margin-top: auto; display: flex; flex-wrap: wrap; gap: .4rem; padding-top: .5rem; }
+  .pill {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .75rem; font-weight: 500;
+    padding: .25rem .55rem; border-radius: 999px;
+    background: color-mix(in srgb, var(--accent-2) 16%, transparent);
+    color: var(--text);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 32%, transparent);
+  }
+  .pill.lang {
+    background: color-mix(in srgb, var(--accent-3) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent-3) 32%, transparent);
+  }
+  .empty {
+    padding: 1.5rem; border-radius: 14px; border: 1px dashed var(--surface-border);
+    color: var(--text-muted); text-align: center;
+  }
+  .archive-list { display: flex; flex-direction: column; gap: .6rem; list-style: none; padding: 0; margin: 0; }
+  .archive-list a {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .85rem 1.1rem; border-radius: 12px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    color: var(--text); text-decoration: none; font-weight: 500;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .archive-list a:hover { transform: translateX(3px); border-color: var(--accent); }
+  .archive-list a::after { content: "\2192"; color: var(--accent); }
+  footer.page-footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--surface-border);
+    color: var(--text-muted); font-size: .85rem;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">Last 30 days · September 13 – October 13 2026</div>
+      <h1>AI News</h1>
+      <p class="subtitle">Headlines, trending agents, and trending repos — generated October 13, 2026.</p>
+      <a class="nav-link" href="../archive.html">&larr; Back to archive</a>
+    </div>
+    
+    <div class="takeaways"><h2>Top Takeaways</h2><ul><li>The past 30 days saw notable new AI model releases, strategic acquisitions and mounting concerns over autonomous agent safety.</li>
+<li>AI agents are becoming more central, with frameworks like LangChain dominating developer adoption and new tools emerging for governance and orchestration.</li>
+<li>Open-source AI GitHub projects are surging, with several repos seeing explosive star growth signaling strong community momentum.</li></ul></div>
+    <section class="group" id="news">
+      <div class="group-header">
+        <h2>📰 Latest AI News</h2>
+        <span class="group-count">5 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.lemonde.fr/en/economy/article/2026/10/06/mistral-ai-unveils-new-ai-model-aimed-at-narrowing-the-gap-with-top-chinese-competitors_6758318_19.html" target="_blank" rel="noopener noreferrer">
+        <h3>Mistral AI unveils flagship model “Mistral Large 4” narrowing gap with top Chinese competitors</h3>
+        <p>Mistral AI released its new Large 4 model aimed at closing the performance gap with leading Chinese models.</p>
+        <div class="meta"><span class="pill">Le Monde (English)</span><span class="pill">October 6 2026</span></div>
+      </a>
+<a class="card" href="https://www.axios.com/2026/09/30/openai-dots-ai-agent-safety" target="_blank" rel="noopener noreferrer">
+        <h3>OpenAI launches “Dots” agents amid growing safety scrutiny</h3>
+        <p>OpenAI debuted its Dots autonomous agents at its developer conference, raising questions about safety after recent agent misbehaviors.</p>
+        <div class="meta"><span class="pill">Axios</span><span class="pill">September 30 2026</span></div>
+      </a>
+<a class="card" href="https://apnews.com/article/a4cfc84ed00353ff8f2dad4bed7b429e" target="_blank" rel="noopener noreferrer">
+        <h3>Nvidia announces Open Agent Safety Platform to curb rogue AI agents</h3>
+        <p>Nvidia introduced a security platform designed to prevent autonomous AI agents from misbehaving.</p>
+        <div class="meta"><span class="pill">AP News</span><span class="pill">September 28 2026</span></div>
+      </a>
+<a class="card" href="https://www.tomshardware.com/tech-industry/artificial-intelligence/amd-acquires-ai-legend-fei-fei-lis-world-labs-for-usd8-2-billion-imagenet-pioneer-will-become-amd-chief-scientist-as-the-chipmaker-brings-her-lab-in-house" target="_blank" rel="noopener noreferrer">
+        <h3>AMD acquires Fei‑Fei Li’s World Labs for $8.2 billion to advance AI hardware integration</h3>
+        <p>AMD acquired Fei‑Fei Li’s AI startup World Labs for USD 8.2 billion and appointed her as chief scientist to align model research with hardware design.</p>
+        <div class="meta"><span class="pill">Tom’s Hardware</span><span class="pill">September 30 2026</span></div>
+      </a>
+<a class="card" href="https://apnews.com/article/4d3a7430f57cbc7c39e1c5f2b7d7e132" target="_blank" rel="noopener noreferrer">
+        <h3>Anthropic’s Claude now contributes 26 percent of its own R&amp;D end‑to‑end</h3>
+        <p>Anthropic announced its Claude model handles a quarter of the company’s model research and development autonomously under supervision.</p>
+        <div class="meta"><span class="pill">Associated Press</span><span class="pill">September 18 2026</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="agents">
+      <div class="group-header">
+        <h2>🤖 Trending AI Agents</h2>
+        <span class="group-count">4 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.getreadyforagents.com/agentindex/frameworks/" target="_blank" rel="noopener noreferrer">
+        <h3>LangChain (LangGraph)</h3>
+        <p>graph‑structured workflow agent framework dominant in developer demand most‑sought agent framework as of October 1, 2026, with demand index 77.1 of 100</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.getreadyforagents.com/agentindex/frameworks/" target="_blank" rel="noopener noreferrer">
+        <h3>Pydantic AI</h3>
+        <p>type‑safe agent framework from the Pydantic team with structured validated outputs emerging in demand ranking among agent frameworks</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.wepoint.com/en/agentic%E2%80%91ai%E2%80%91radar/strong%E2%80%91signals/" target="_blank" rel="noopener noreferrer">
+        <h3>AgentScope</h3>
+        <p>framework offering long‑running procedures, model routing, voice interaction, orchestration showing strongest combined movement on Agentic AI Radar (momentum + maturity signals)</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://agentic.ai/best/general%E2%80%91purpose%E2%80%91agents" target="_blank" rel="noopener noreferrer">
+        <h3>Hermes Agent</h3>
+        <p>open‑source general‑purpose autonomous agent from Nous Research that runs on your server and retains context over time ranked among best general‑purpose AI agents in October 2026 review</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="repos">
+      <div class="group-header">
+        <h2>⭐ Trending AI GitHub Repos</h2>
+        <span class="group-count">8 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://whatstrending.ai/repos/weekly" target="_blank" rel="noopener noreferrer">
+        <h3>feder‑cr/invisible_playwright_mcp</h3>
+        <p>rapidly accelerating AI repo (Python)</p>
+        <div class="meta"><span class="pill">jump in star growth rate (from 5822/day to 23/day)</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://whatstrending.ai/repos/weekly" target="_blank" rel="noopener noreferrer">
+        <h3>morluto/rea</h3>
+        <p>fastest‑growing AI repo currently, TypeScript</p>
+        <div class="meta"><span class="pill">~28 147 stars/day (+140 733 stars in window)</span><span class="pill lang">TypeScript</span></div>
+      </a>
+<a class="card" href="https://whatstrending.ai/repos/weekly" target="_blank" rel="noopener noreferrer">
+        <h3>anthropics/knowledge‑work‑plugins</h3>
+        <p>Anthropic plugin tooling gaining traction</p>
+        <div class="meta"><span class="pill">growth from 95/day to 501/day (+407/day)</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://whatstrending.ai/repos/weekly" target="_blank" rel="noopener noreferrer">
+        <h3>debpalash/VoiceStudio</h3>
+        <p>voice‑studio toolkit surging in popularity</p>
+        <div class="meta"><span class="pill">growth from 671/day to 946/day (+275/day)</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://whatstrending.ai/repos/weekly" target="_blank" rel="noopener noreferrer">
+        <h3>Alishahryar1/free‑claude‑code</h3>
+        <p>repository around Claude code utilities</p>
+        <div class="meta"><span class="pill">growth from 80/day to 334/day (+254/day)</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://whatstrending.ai/repos/weekly" target="_blank" rel="noopener noreferrer">
+        <h3>ayghri/i‑have‑adhd</h3>
+        <p>tool gaining interest</p>
+        <div class="meta"><span class="pill">growth from 310/day to 454/day (+144/day)</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://hysenlabs.com/data/star-growth" target="_blank" rel="noopener noreferrer">
+        <h3>debpalash/OmniVoice‑Studio</h3>
+        <p>local voice cloning, video dubbing open ElevenLabs alternative</p>
+        <div class="meta"><span class="pill">~33 984 stars gained in last 30 days</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://hysenlabs.com/data/star-growth" target="_blank" rel="noopener noreferrer">
+        <h3>deepseek‑ai/deepseek‑harness</h3>
+        <p>TypeScript open‑source harness tool</p>
+        <div class="meta"><span class="pill">~29 523 stars gained in last 30 days</span><span class="pill lang">TypeScript</span></div>
+      </a></div>
+    </section>
+  
+    <footer class="page-footer">Generated automatically by the Daily AI News pipeline.</footer>
+  </div>
+</body>
+</html>
