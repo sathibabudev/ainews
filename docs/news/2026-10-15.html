@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI News</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5fb;
+    --bg-accent-1: #eef0ff;
+    --bg-accent-2: #fdf1ff;
+    --surface: #ffffff;
+    --surface-border: #e6e8f5;
+    --text: #171a2b;
+    --text-muted: #5c6178;
+    --accent: #6d5bff;
+    --accent-2: #17b6c9;
+    --accent-3: #e84393;
+    --shadow: 0 1px 2px rgba(23, 26, 43, 0.05), 0 10px 26px rgba(23, 26, 43, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0c16;
+      --bg-accent-1: #12142a;
+      --bg-accent-2: #170f22;
+      --surface: rgba(255, 255, 255, 0.045);
+      --surface-border: rgba(255, 255, 255, 0.09);
+      --text: #eef0fb;
+      --text-muted: #9aa0bd;
+      --accent: #8b7bff;
+      --accent-2: #37e0ea;
+      --accent-3: #ff77b7;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 14px 32px rgba(0, 0, 0, 0.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, var(--bg-accent-1), transparent 60%),
+      radial-gradient(1000px 500px at 110% 10%, var(--bg-accent-2), transparent 55%),
+      var(--bg);
+    background-attachment: fixed;
+    line-height: 1.6;
+  }
+  .page { max-width: 980px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    padding: .3rem .7rem; border-radius: 999px; margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 .5rem;
+    background: linear-gradient(90deg, var(--text), var(--accent) 120%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: -0.02em;
+  }
+  .subtitle { color: var(--text-muted); font-size: 1rem; margin: 0; }
+  .nav-link {
+    display: inline-flex; align-items: center; gap: .4rem;
+    margin-top: 1.25rem;
+    padding: .55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .9rem; font-weight: 500;
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .nav-link:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .takeaways {
+    margin: 2rem 0;
+    padding: 1.4rem 1.6rem;
+    border-radius: 16px;
+    border: 1px solid var(--surface-border);
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .takeaways h2 { margin: 0 0 .75rem; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+  .takeaways ul { margin: 0; padding-left: 1.2rem; }
+  .takeaways li { margin-bottom: .5rem; }
+  .takeaways li:last-child { margin-bottom: 0; }
+  section.group { margin-top: 3rem; }
+  .group-header { display: flex; align-items: baseline; gap: .6rem; margin-bottom: 1.25rem; }
+  .group-header h2 { font-size: 1.3rem; margin: 0; }
+  .group-count { color: var(--text-muted); font-size: .85rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .card {
+    display: flex; flex-direction: column; gap: .6rem;
+    padding: 1.25rem; border-radius: 14px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    text-decoration: none; color: inherit;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card h3 { margin: 0; font-size: 1.05rem; line-height: 1.4; color: var(--text); }
+  .card p { margin: 0; color: var(--text-muted); font-size: .92rem; }
+  .card .meta { margin-top: auto; display: flex; flex-wrap: wrap; gap: .4rem; padding-top: .5rem; }
+  .pill {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .75rem; font-weight: 500;
+    padding: .25rem .55rem; border-radius: 999px;
+    background: color-mix(in srgb, var(--accent-2) 16%, transparent);
+    color: var(--text);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 32%, transparent);
+  }
+  .pill.lang {
+    background: color-mix(in srgb, var(--accent-3) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent-3) 32%, transparent);
+  }
+  .empty {
+    padding: 1.5rem; border-radius: 14px; border: 1px dashed var(--surface-border);
+    color: var(--text-muted); text-align: center;
+  }
+  .archive-list { display: flex; flex-direction: column; gap: .6rem; list-style: none; padding: 0; margin: 0; }
+  .archive-list a {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .85rem 1.1rem; border-radius: 12px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    color: var(--text); text-decoration: none; font-weight: 500;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .archive-list a:hover { transform: translateX(3px); border-color: var(--accent); }
+  .archive-list a::after { content: "\2192"; color: var(--accent); }
+  footer.page-footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--surface-border);
+    color: var(--text-muted); font-size: .85rem;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">Last 30 days · September 15 – October 15, 2026</div>
+      <h1>AI News</h1>
+      <p class="subtitle">Headlines, trending agents, and trending repos — generated October 15, 2026.</p>
+      <a class="nav-link" href="../archive.html">&larr; Back to archive</a>
+    </div>
+    
+    <div class="takeaways"><h2>Top Takeaways</h2><ul><li>Meta and Mistral both released competitive new AI models this window, raising the bar in open models and agent capabilities.</li>
+<li>Usage data shows AI agents like Muse and Grok are surging in adoption and traffic share, highlighting growing real-world deployment.</li>
+<li>Funding and infrastructure innovations are prominent—Arena raised $200M at a $3.1B valuation; CoreWeave launched serverless GPU offerings.</li>
+<li>Persistent, CRM-integrated AI agents are entering enterprise workflows, notably from OpenAI and Salesforce.</li>
+<li>On GitHub, agentic infrastructure projects and orchestration frameworks are skyrocketing in popularity, with some seeing explosive star growth.</li></ul></div>
+    <section class="group" id="news">
+      <div class="group-header">
+        <h2>📰 Latest AI News</h2>
+        <span class="group-count">6 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.axios.com/2026/10/12/meta-new-ai-models-anthropic-openai" target="_blank" rel="noopener noreferrer">
+        <h3>Meta unveils Muse Wonder and Muse Wonder Full AI models</h3>
+        <p>Meta released Muse Wonder and Muse Wonder Full, which deliver state‑of‑the‑art performance across tasks including agents, memory, and coding.</p>
+        <div class="meta"><span class="pill">Axios</span><span class="pill">October 12, 2026</span></div>
+      </a>
+<a class="card" href="https://www.lemonde.fr/en/economy/article/2026/10/06/mistral-ai-unveils-new-ai-model-aimed-at-narrowing-the-gap-with-top-chinese-competitors_6758318_19.html" target="_blank" rel="noopener noreferrer">
+        <h3>Mistral AI launches Large 4 open‑weight flagship model</h3>
+        <p>Mistral’s new Large 4 model “narrows the gap” with the world’s best open models according to co‑founder Guillaume Lample.</p>
+        <div class="meta"><span class="pill">Le Monde</span><span class="pill">October 6, 2026</span></div>
+      </a>
+<a class="card" href="https://thursdai.news/releases/2026-10" target="_blank" rel="noopener noreferrer">
+        <h3>Arena raises $200M at $3.1B valuation</h3>
+        <p>Arena secured $200 million in Series funding, at a $3.1 billion valuation.</p>
+        <div class="meta"><span class="pill">ThursdAI</span><span class="pill">October 2026 (latest week October 8)</span></div>
+      </a>
+<a class="card" href="https://thursdai.news/releases/2026-10" target="_blank" rel="noopener noreferrer">
+        <h3>CoreWeave launches serverless GPUs</h3>
+        <p>CoreWeave introduced serverless GPU offerings with per‑hour billing and no contract.</p>
+        <div class="meta"><span class="pill">ThursdAI</span><span class="pill">October 2026 (latest week October 8)</span></div>
+      </a>
+<a class="card" href="https://thursdai.news/releases/2026-10" target="_blank" rel="noopener noreferrer">
+        <h3>Aleph Alpha releases Kolibri‑1 open‑weight model</h3>
+        <p>Kolibri‑1, a 78 billion‑parameter German‑English MoE open‑weight model under Apache 2.0, is released.</p>
+        <div class="meta"><span class="pill">ThursdAI</span><span class="pill">October 2026 (latest week October 8)</span></div>
+      </a>
+<a class="card" href="https://www.humansecurity.com/learn/blog/september-2026-agentic-traffic-triples-meta-muse-debuts-at-no-1/" target="_blank" rel="noopener noreferrer">
+        <h3>HUMAN reports agentic traffic tripled, Muse tops share</h3>
+        <p>Agentic web traffic tripled in September; Meta’s Muse debuted at 40.34 % share, with ChatGPT Agent at 28.6 %.</p>
+        <div class="meta"><span class="pill">HUMAN blog</span><span class="pill">October 5, 2026</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="agents">
+      <div class="group-header">
+        <h2>🤖 Trending AI Agents</h2>
+        <span class="group-count">5 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.humansecurity.com/learn/blog/september-2026-agentic-traffic-triples-meta-muse-debuts-at-no-1/" target="_blank" rel="noopener noreferrer">
+        <h3>Meta Muse</h3>
+        <p>A personal AI agent by Meta that now captures over 40 % of observed agentic traffic, used across web interactions. Surged to No 1 in agentic traffic with tripled usage in September.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.toriihq.com/research/reports/ai-breakout-october-2026" target="_blank" rel="noopener noreferrer">
+        <h3>Grok</h3>
+        <p>An AI assistant by Grok climbing rapidly in app usage rankings (up 9 places to #8 in Torii’s October ranking). Strong upward momentum among AI apps for adoption.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.toriihq.com/research/reports/ai-breakout-october-2026" target="_blank" rel="noopener noreferrer">
+        <h3>Grok Bot</h3>
+        <p>A new AI agent appearing in productivity apps list at position 15, newly ranked in Torii’s October data. New entry with high “Shadow IT” index, signaling rapid informal adoption.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://orthotropy.com/en/insights/ai-agents-news-2026-10" target="_blank" rel="noopener noreferrer">
+        <h3>OpenAI Data agent (ChatGPT Work)</h3>
+        <p>A persistent agent integrated into ChatGPT Work that analyzes company data and assembles dashboards. Marks shift toward CRM‑integrated persistent agents for business use.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://orthotropy.com/en/insights/ai-agents-news-2026-10" target="_blank" rel="noopener noreferrer">
+        <h3>Salesforce Hunter agent</h3>
+        <p>An outbound sales agent with long‑horizon runtime, context retention, and multi‑day pipeline execution. First agent using Salesforce’s long‑horizon runtime, entering pilot with GA targeted for November.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="repos">
+      <div class="group-header">
+        <h2>⭐ Trending AI GitHub Repos</h2>
+        <span class="group-count">6 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://whatstrending.ai/repos" target="_blank" rel="noopener noreferrer">
+        <h3>morluto/rea</h3>
+        <p>Top trending AI repo with explosive star growth this week.</p>
+        <div class="meta"><span class="pill">~241 k (+226 k this week)</span><span class="pill lang">TypeScript</span></div>
+      </a>
+<a class="card" href="https://whatstrending.ai/repos" target="_blank" rel="noopener noreferrer">
+        <h3>boykopovar/AnyPS5</h3>
+        <p>Rising fast in AI/ML trend during this week.</p>
+        <div class="meta"><span class="pill">~37 k (+26 k this week)</span><span class="pill lang">C++</span></div>
+      </a>
+<a class="card" href="https://www.coddykit.com/pages/blog-detail?id=5129956&slug=github-trending-october-2026" target="_blank" rel="noopener noreferrer">
+        <h3>obra/superpowers</h3>
+        <p>Agentic skills framework for building production‑grade AI agents.</p>
+        <div class="meta"><span class="pill">~295 k</span><span class="pill lang">Shell</span></div>
+      </a>
+<a class="card" href="https://bobpage0451.github.io/ai-trending-repos/" target="_blank" rel="noopener noreferrer">
+        <h3>langchain-ai/langchain</h3>
+        <p>Orchestration framework connecting prompts, models, tools, memory, retrieval, and agent workflows.</p>
+        <div class="meta"><span class="pill">~147.8 k</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://bobpage0451.github.io/ai-trending-repos/" target="_blank" rel="noopener noreferrer">
+        <h3>langchain-ai/langgraph</h3>
+        <p>Graph‑based orchestration layer for AI apps enabling workflows and retrieval.</p>
+        <div class="meta"><span class="pill">~43.2 k</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://myaiguide.co/news/repos-monthly-september-2026" target="_blank" rel="noopener noreferrer">
+        <h3>affaan-m/everything-claude-code</h3>
+        <p>Meta‑system harness for AI coding agents (Everything Claude Code).</p>
+        <div class="meta"><span class="pill">~270 k (+25 k in September)</span><span class="pill lang">unknown</span></div>
+      </a></div>
+    </section>
+  
+    <footer class="page-footer">Generated automatically by the Daily AI News pipeline.</footer>
+  </div>
+</body>
+</html>
