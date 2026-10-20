@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI News</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5fb;
+    --bg-accent-1: #eef0ff;
+    --bg-accent-2: #fdf1ff;
+    --surface: #ffffff;
+    --surface-border: #e6e8f5;
+    --text: #171a2b;
+    --text-muted: #5c6178;
+    --accent: #6d5bff;
+    --accent-2: #17b6c9;
+    --accent-3: #e84393;
+    --shadow: 0 1px 2px rgba(23, 26, 43, 0.05), 0 10px 26px rgba(23, 26, 43, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0c16;
+      --bg-accent-1: #12142a;
+      --bg-accent-2: #170f22;
+      --surface: rgba(255, 255, 255, 0.045);
+      --surface-border: rgba(255, 255, 255, 0.09);
+      --text: #eef0fb;
+      --text-muted: #9aa0bd;
+      --accent: #8b7bff;
+      --accent-2: #37e0ea;
+      --accent-3: #ff77b7;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 14px 32px rgba(0, 0, 0, 0.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, var(--bg-accent-1), transparent 60%),
+      radial-gradient(1000px 500px at 110% 10%, var(--bg-accent-2), transparent 55%),
+      var(--bg);
+    background-attachment: fixed;
+    line-height: 1.6;
+  }
+  .page { max-width: 980px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    padding: .3rem .7rem; border-radius: 999px; margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 .5rem;
+    background: linear-gradient(90deg, var(--text), var(--accent) 120%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: -0.02em;
+  }
+  .subtitle { color: var(--text-muted); font-size: 1rem; margin: 0; }
+  .nav-link {
+    display: inline-flex; align-items: center; gap: .4rem;
+    margin-top: 1.25rem;
+    padding: .55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .9rem; font-weight: 500;
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .nav-link:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .takeaways {
+    margin: 2rem 0;
+    padding: 1.4rem 1.6rem;
+    border-radius: 16px;
+    border: 1px solid var(--surface-border);
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .takeaways h2 { margin: 0 0 .75rem; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+  .takeaways ul { margin: 0; padding-left: 1.2rem; }
+  .takeaways li { margin-bottom: .5rem; }
+  .takeaways li:last-child { margin-bottom: 0; }
+  section.group { margin-top: 3rem; }
+  .group-header { display: flex; align-items: baseline; gap: .6rem; margin-bottom: 1.25rem; }
+  .group-header h2 { font-size: 1.3rem; margin: 0; }
+  .group-count { color: var(--text-muted); font-size: .85rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .card {
+    display: flex; flex-direction: column; gap: .6rem;
+    padding: 1.25rem; border-radius: 14px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    text-decoration: none; color: inherit;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card h3 { margin: 0; font-size: 1.05rem; line-height: 1.4; color: var(--text); }
+  .card p { margin: 0; color: var(--text-muted); font-size: .92rem; }
+  .card .meta { margin-top: auto; display: flex; flex-wrap: wrap; gap: .4rem; padding-top: .5rem; }
+  .pill {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .75rem; font-weight: 500;
+    padding: .25rem .55rem; border-radius: 999px;
+    background: color-mix(in srgb, var(--accent-2) 16%, transparent);
+    color: var(--text);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 32%, transparent);
+  }
+  .pill.lang {
+    background: color-mix(in srgb, var(--accent-3) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent-3) 32%, transparent);
+  }
+  .empty {
+    padding: 1.5rem; border-radius: 14px; border: 1px dashed var(--surface-border);
+    color: var(--text-muted); text-align: center;
+  }
+  .archive-list { display: flex; flex-direction: column; gap: .6rem; list-style: none; padding: 0; margin: 0; }
+  .archive-list a {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .85rem 1.1rem; border-radius: 12px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    color: var(--text); text-decoration: none; font-weight: 500;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .archive-list a:hover { transform: translateX(3px); border-color: var(--accent); }
+  .archive-list a::after { content: "\2192"; color: var(--accent); }
+  footer.page-footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--surface-border);
+    color: var(--text-muted); font-size: .85rem;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">Last 30 days · September 20 – October 20, 2026</div>
+      <h1>AI News</h1>
+      <p class="subtitle">Headlines, trending agents, and trending repos — generated October 20, 2026.</p>
+      <a class="nav-link" href="../archive.html">&larr; Back to archive</a>
+    </div>
+    
+    <div class="takeaways"><h2>Top Takeaways</h2><ul><li>Major AI funding continues accelerating, especially in compute- and agent‑focused startups</li>
+<li>Agent infrastructure and memory tools are commanding attention both in development and via GitHub traction</li>
+<li>October saw a wave of open‑source model releases, particularly large vision and multi‑modal models</li>
+<li>GitHub activity is dominated by agent tooling, scaffolding, and coding‑agent support projects</li>
+<li>Trending AI GitHub repos reflect diverse areas: agent memory, orchestration, creative tools, and local runtimes</li></ul></div>
+    <section class="group" id="news">
+      <div class="group-header">
+        <h2>📰 Latest AI News</h2>
+        <span class="group-count">5 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.axios.com/2026/10/19/tenstorrent-ai-compute" target="_blank" rel="noopener noreferrer">
+        <h3>Tenstorrent raises 1.5 billion for AI compute</h3>
+        <p>Tenstorrent, a Santa Clara inference‑chip maker, raised 1.5 billion at a 6.2 billion post‑money valuation.</p>
+        <div class="meta"><span class="pill">Axios</span><span class="pill">October 19 2026</span></div>
+      </a>
+<a class="card" href="https://www.axios.com/2026/10/16/coreweave-ai-borrowing-yields" target="_blank" rel="noopener noreferrer">
+        <h3>CoreWeave’s financial stress raises concerns for AI boom funding</h3>
+        <p>CoreWeave’s mounting debt and debt sell‑off may signal bond investors pulling back from AI data‑center build‑out.</p>
+        <div class="meta"><span class="pill">Axios</span><span class="pill">October 16 2026</span></div>
+      </a>
+<a class="card" href="https://www.axios.com/newsletters/axios-pro-rata-94e4f1ec-65ff-4337-9201-46be77d96a4f" target="_blank" rel="noopener noreferrer">
+        <h3>SoftBank in talks to raise 100 billion AI‑focused fund, per FT</h3>
+        <p>SoftBank is reportedly negotiating a 100 billion fund focused on AI investments.</p>
+        <div class="meta"><span class="pill">Axios via Pro Rata</span><span class="pill">October 13 2026</span></div>
+      </a>
+<a class="card" href="https://thursdai.news/releases/2026-10" target="_blank" rel="noopener noreferrer">
+        <h3>Muse Spark Open and other major open‑source models released</h3>
+        <p>Meta released Muse Spark Open (816B parameters, 42B active) among dozens of October model launches including Nemotron 3.5 Super VL.</p>
+        <div class="meta"><span class="pill">ThursdAI</span><span class="pill">mid‑October 2026</span></div>
+      </a>
+<a class="card" href="https://www.axios.com/2026/09/01/aslan-agentic%E2%80%91ai%E2%80%91national%E2%80%91security%E2%80%91funding" target="_blank" rel="noopener noreferrer">
+        <h3>Aslan launches AI agents for national security with 20.8 million funding</h3>
+        <p>Aslan unveiled an AI agentic‑framework for intelligence‑collecting operatives after raising 20.8 million.</p>
+        <div class="meta"><span class="pill">Axios</span><span class="pill">September 1 2026</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="agents">
+      <div class="group-header">
+        <h2>🤖 Trending AI Agents</h2>
+        <span class="group-count">4 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.axios.com/2026/09/01/aslan-agentic%E2%80%91ai%E2%80%91national%E2%80%91security%E2%80%91funding" target="_blank" rel="noopener noreferrer">
+        <h3>Aslan</h3>
+        <p>AI agents that act like operatives for intelligence and law‑enforcement digital evidence collection They launched publicly after raising 20.8 million and offer agentic frameworks for national‑security missions</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.reddit.com/r/SATNA_PROJECT/comments/1x8z0c2/5_more_opensource_github_projects_making_100mo_ai/" target="_blank" rel="noopener noreferrer">
+        <h3>DeepSeek Harness</h3>
+        <p>Modular runtime for AI coding agents with plugin‑based architecture It avoids monolithic agent runtimes and is gaining attention as a more flexible system</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.reddit.com/r/u_Aggravating-Wolf2840/comments/1x8v79w/i_got_tired_of_missing_new_ai_tools_so_i_built_a/" target="_blank" rel="noopener noreferrer">
+        <h3>Llmspeed</h3>
+        <p>Tool to benchmark local LLM speed before investing in hardware Helps users evaluate performance of local models before purchase decisions</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.reddit.com/r/u_Aggravating-Wolf2840/comments/1x8v79w/i_got_tired_of_missing_new_ai_tools_so_i_built_a/" target="_blank" rel="noopener noreferrer">
+        <h3>NPCTalk</h3>
+        <p>Voice tool for game NPCs It brings voice capability to game development using AI agents for NPC dialog</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="repos">
+      <div class="group-header">
+        <h2>⭐ Trending AI GitHub Repos</h2>
+        <span class="group-count">8 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer">
+        <h3>mattpocock/skills</h3>
+        <p>Instruction files (‘skills’) for AI coding agents, from a developer’s own setup</p>
+        <div class="meta"><span class="pill">~291,729 (+12,292 this week)</span><span class="pill lang"></span></div>
+      </a>
+<a class="card" href="https://github.com/paperclipai/paperclip" target="_blank" rel="noopener noreferrer">
+        <h3>paperclipai/paperclip</h3>
+        <p>Open‑source app for managing AI agents at work</p>
+        <div class="meta"><span class="pill">~102,307 (+21,643 this month)</span><span class="pill lang"></span></div>
+      </a>
+<a class="card" href="https://github.com/vectorize%E2%80%91io/hindsight" target="_blank" rel="noopener noreferrer">
+        <h3>vectorize‑io/hindsight</h3>
+        <p>Agent memory layer to retain, recall, reflect across sessions</p>
+        <div class="meta"><span class="pill">~45,358 (+14,507 this week)</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://github.com/pingdotgg/t3code" target="_blank" rel="noopener noreferrer">
+        <h3>pingdotgg/t3code</h3>
+        <p>Cross‑platform (iOS/Android/Web/Electron) agent harness control console</p>
+        <div class="meta"><span class="pill">~24,981 (+6,482 this week)</span><span class="pill lang">TypeScript</span></div>
+      </a>
+<a class="card" href="https://github.com/debpalash/VoiceStudio" target="_blank" rel="noopener noreferrer">
+        <h3>debpalash/VoiceStudio</h3>
+        <p>Agent voice studio tool</p>
+        <div class="meta"><span class="pill">~52,948 (+5,895 this week)</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://github.com/NVIDIA/OpenShell" target="_blank" rel="noopener noreferrer">
+        <h3>NVIDIA/OpenShell</h3>
+        <p>Rust‑based microVM runtime for agents with minimal‑permission key injection</p>
+        <div class="meta"><span class="pill">~14,774 (+5,854 this week)</span><span class="pill lang">Rust</span></div>
+      </a>
+<a class="card" href="https://github.com/Shubhamsaboo/awesome%E2%80%91llm%E2%80%91apps" target="_blank" rel="noopener noreferrer">
+        <h3>Shubhamsaboo/awesome‑llm‑apps</h3>
+        <p>Collection of 100+ open‑source agents, agent skills and RAG apps</p>
+        <div class="meta"><span class="pill">140,000+</span><span class="pill lang"></span></div>
+      </a>
+<a class="card" href="https://github.com/punkpeye/awesome%E2%80%91mcp%E2%80%91servers" target="_blank" rel="noopener noreferrer">
+        <h3>punkpeye/awesome‑mcp‑servers</h3>
+        <p>Master list of MCP servers for agents to touch real systems</p>
+        <div class="meta"><span class="pill">95,000+</span><span class="pill lang"></span></div>
+      </a></div>
+    </section>
+  
+    <footer class="page-footer">Generated automatically by the Daily AI News pipeline.</footer>
+  </div>
+</body>
+</html>
