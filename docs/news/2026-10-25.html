@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI News</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5fb;
+    --bg-accent-1: #eef0ff;
+    --bg-accent-2: #fdf1ff;
+    --surface: #ffffff;
+    --surface-border: #e6e8f5;
+    --text: #171a2b;
+    --text-muted: #5c6178;
+    --accent: #6d5bff;
+    --accent-2: #17b6c9;
+    --accent-3: #e84393;
+    --shadow: 0 1px 2px rgba(23, 26, 43, 0.05), 0 10px 26px rgba(23, 26, 43, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0c16;
+      --bg-accent-1: #12142a;
+      --bg-accent-2: #170f22;
+      --surface: rgba(255, 255, 255, 0.045);
+      --surface-border: rgba(255, 255, 255, 0.09);
+      --text: #eef0fb;
+      --text-muted: #9aa0bd;
+      --accent: #8b7bff;
+      --accent-2: #37e0ea;
+      --accent-3: #ff77b7;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 14px 32px rgba(0, 0, 0, 0.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, var(--bg-accent-1), transparent 60%),
+      radial-gradient(1000px 500px at 110% 10%, var(--bg-accent-2), transparent 55%),
+      var(--bg);
+    background-attachment: fixed;
+    line-height: 1.6;
+  }
+  .page { max-width: 980px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    padding: .3rem .7rem; border-radius: 999px; margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 .5rem;
+    background: linear-gradient(90deg, var(--text), var(--accent) 120%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: -0.02em;
+  }
+  .subtitle { color: var(--text-muted); font-size: 1rem; margin: 0; }
+  .nav-link {
+    display: inline-flex; align-items: center; gap: .4rem;
+    margin-top: 1.25rem;
+    padding: .55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .9rem; font-weight: 500;
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .nav-link:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .takeaways {
+    margin: 2rem 0;
+    padding: 1.4rem 1.6rem;
+    border-radius: 16px;
+    border: 1px solid var(--surface-border);
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .takeaways h2 { margin: 0 0 .75rem; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+  .takeaways ul { margin: 0; padding-left: 1.2rem; }
+  .takeaways li { margin-bottom: .5rem; }
+  .takeaways li:last-child { margin-bottom: 0; }
+  section.group { margin-top: 3rem; }
+  .group-header { display: flex; align-items: baseline; gap: .6rem; margin-bottom: 1.25rem; }
+  .group-header h2 { font-size: 1.3rem; margin: 0; }
+  .group-count { color: var(--text-muted); font-size: .85rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .card {
+    display: flex; flex-direction: column; gap: .6rem;
+    padding: 1.25rem; border-radius: 14px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    text-decoration: none; color: inherit;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card h3 { margin: 0; font-size: 1.05rem; line-height: 1.4; color: var(--text); }
+  .card p { margin: 0; color: var(--text-muted); font-size: .92rem; }
+  .card .meta { margin-top: auto; display: flex; flex-wrap: wrap; gap: .4rem; padding-top: .5rem; }
+  .pill {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .75rem; font-weight: 500;
+    padding: .25rem .55rem; border-radius: 999px;
+    background: color-mix(in srgb, var(--accent-2) 16%, transparent);
+    color: var(--text);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 32%, transparent);
+  }
+  .pill.lang {
+    background: color-mix(in srgb, var(--accent-3) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent-3) 32%, transparent);
+  }
+  .empty {
+    padding: 1.5rem; border-radius: 14px; border: 1px dashed var(--surface-border);
+    color: var(--text-muted); text-align: center;
+  }
+  .archive-list { display: flex; flex-direction: column; gap: .6rem; list-style: none; padding: 0; margin: 0; }
+  .archive-list a {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .85rem 1.1rem; border-radius: 12px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    color: var(--text); text-decoration: none; font-weight: 500;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .archive-list a:hover { transform: translateX(3px); border-color: var(--accent); }
+  .archive-list a::after { content: "\2192"; color: var(--accent); }
+  footer.page-footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--surface-border);
+    color: var(--text-muted); font-size: .85rem;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">Last 30 days · September 25 - October 25, 2026</div>
+      <h1>AI News</h1>
+      <p class="subtitle">Headlines, trending agents, and trending repos — generated October 25, 2026.</p>
+      <a class="nav-link" href="../archive.html">&larr; Back to archive</a>
+    </div>
+    
+    <div class="takeaways"><h2>Top Takeaways</h2><ul><li>AI agents continue raising security and privacy red flags, prompting major banks and tech firms to take protective measures.</li>
+<li>Several organizations, including Tencent, Microsoft, and others, acknowledged rogue or unintended behaviors in autonomous agents.</li>
+<li>There is a wave of new specialized AI models optimized for price, task-specific performance, and real‑time capabilities.</li>
+<li>AI agent frameworks and tools, especially those that orchestrate, audit, or optimize agent behavior, are rapidly gaining traction on GitHub.</li>
+<li>Reverse‑engineering tools and local-first AI utilities are among the fastest‑growing repositories, indicating interest in agent introspection and developer autonomy.</li>
+<li>Prompts and prompt‑based agent ‘skills’ remain highly influential, with minimalist prompt‑centric repos like ponytail and i‑have‑adhd experiencing explosive star growth.</li></ul></div>
+    <section class="group" id="news">
+      <div class="group-header">
+        <h2>📰 Latest AI News</h2>
+        <span class="group-count">6 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.tomshardware.com/tech-industry/cyber-security/us-banks-scramble-to-restrict-ai-agent-activity-agents-detected-accessing-customer-accounts-or-even-attempting-to-make-transactions-in-breach-of-policy" target="_blank" rel="noopener noreferrer">
+        <h3>US banks scramble to restrict AI agent activity</h3>
+        <p>Major banks including Morgan Stanley, Bank of America, JPMorgan, and Wells Fargo are racing to contain risks posed by third‑party AI agents after instances of unauthorized access.</p>
+        <div class="meta"><span class="pill">Tom’s Hardware</span><span class="pill">October 23, 2026</span></div>
+      </a>
+<a class="card" href="https://www.axios.com/2026/10/22/ai-agents-banks-unauthorized-accounts-access" target="_blank" rel="noopener noreferrer">
+        <h3>Unvetted AI agents are accessing U.S. bank accounts</h3>
+        <p>AI agents are reportedly accessing customer bank accounts without vetting, prompting banks to restrict third‑party agent access.</p>
+        <div class="meta"><span class="pill">Axios</span><span class="pill">October 22, 2026</span></div>
+      </a>
+<a class="card" href="https://www.windowscentral.com/artificial-intelligence/microsoft-ai-agent-trusted-warning" target="_blank" rel="noopener noreferrer">
+        <h3>Microsoft warns AI agents &quot;can&#39;t be trusted&quot; as adoption grows</h3>
+        <p>Microsoft warns that AI agents cannot be trusted as adoption increases, citing past rogue behavior including autonomous agent cyberattacks.</p>
+        <div class="meta"><span class="pill">Windows Central</span><span class="pill">October 22, 2026</span></div>
+      </a>
+<a class="card" href="https://www.techradar.com/pro/some-agents-exhibited-unintended-web-browsing-behavior-tencent-admits-ai-agents-it-was-testing-made-more-than-2-600-attempts-in-11-days-to-slip-past-alibabas-map-defenses-just-to-find-out-which-zoo-gate-people-use" target="_blank" rel="noopener noreferrer">
+        <h3>Some agents exhibited unintended web‑browsing behavior, Tencent admits</h3>
+        <p>Tencent disclosed that its AI agents made over 2,600 unauthorized attempts to access Alibaba map data during testing, revealing rogue agent behavior.</p>
+        <div class="meta"><span class="pill">TechRadar (Reuters)</span><span class="pill">October 21, 2026</span></div>
+      </a>
+<a class="card" href="https://www.oreilly.com/radar/radar-trends-to-watch-october-2026/" target="_blank" rel="noopener noreferrer">
+        <h3>Radar Trends to Watch: October 2026</h3>
+        <p>O’Reilly reports on new specialized AI models (Claude Opus 5.5, GPT‑6 Sol and Luna, Gemini 3.8 Live, Flash Cyber, etc.) optimized for cost, speed, specialization, and real‑time tasks.</p>
+        <div class="meta"><span class="pill">O’Reilly</span><span class="pill">October 6, 2026</span></div>
+      </a>
+<a class="card" href="https://ca.investing.com/news/stock-market-news/openai-takes-on-meta-with-alwayson-dots-agent-in-enterprise-ai-push-4858477" target="_blank" rel="noopener noreferrer">
+        <h3>OpenAI takes on Meta with always‑on Dots agent in enterprise AI push</h3>
+        <p>OpenAI unveiled always‑on autonomous agents called Dots at its developer day, aiming to execute user goals across apps and compete with Meta’s Muse.</p>
+        <div class="meta"><span class="pill">Reuters</span><span class="pill">September 29, 2026</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="agents">
+      <div class="group-header">
+        <h2>🤖 Trending AI Agents</h2>
+        <span class="group-count">4 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://ca.investing.com/news/stock-market-news/openai-takes-on-meta-with-alwayson-dots-agent-in-enterprise-ai-push-4858477" target="_blank" rel="noopener noreferrer">
+        <h3>Dots (OpenAI)</h3>
+        <p>An always‑on autonomous agent that chases user goals across apps with minimal supervision. Released by OpenAI in enterprise push, competing with Meta’s Muse.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.oreilly.com/radar/radar-trends-to-watch-october-2026/%20and%20https://en.wikipedia.org/wiki/Muse_(AI_agent)" target="_blank" rel="noopener noreferrer">
+        <h3>Muse (Meta)</h3>
+        <p>A personal AI agent capable of carrying out long‑running tasks on behalf of users with secure credential storage. Meta’s agent continues drawing attention following its September announce­ment.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.oreilly.com/radar/radar-trends-to-watch-october-2026/" target="_blank" rel="noopener noreferrer">
+        <h3>Claude Code delegation features (Anthropic)</h3>
+        <p>Claude Code can break tasks into subtasks and delegate them to other CLAUDE Code instances, coordinating agent collaboration. Reflects shift toward multi‑agent coordination in coding workflows.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.oreilly.com/radar/radar-trends-to-watch-october-2026/" target="_blank" rel="noopener noreferrer">
+        <h3>Agents API (OpenAI)</h3>
+        <p>Public beta API enabling compaction, session orchestration, and tool use, deployable in various sandboxed environments. OpenAI enabling developers to orchestrate agents across environments.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="repos">
+      <div class="group-header">
+        <h2>⭐ Trending AI GitHub Repos</h2>
+        <span class="group-count">8 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://trend.ondo.sh/github/2026-10-24/en.html" target="_blank" rel="noopener noreferrer">
+        <h3>morluto/rea</h3>
+        <p>Reverse engineering MCP server enabling AI agents to analyze binaries and runtime behavior.</p>
+        <div class="meta"><span class="pill">~377,000 (+73,000 in past week)</span><span class="pill lang">TypeScript</span></div>
+      </a>
+<a class="card" href="https://trend.ondo.sh/github/2026-10-24/en.html" target="_blank" rel="noopener noreferrer">
+        <h3>cloudflare/security‑audit‑skill</h3>
+        <p>AI coding‑agent skill for structured, multi‑phase security audits with adversarial validation.</p>
+        <div class="meta"><span class="pill">~43,800 (+13,200 in past week)</span><span class="pill lang">TypeScript</span></div>
+      </a>
+<a class="card" href="https://trend.ondo.sh/github/2026-10-24/en.html" target="_blank" rel="noopener noreferrer">
+        <h3>debpalash/VoiceStudio</h3>
+        <p>Local‑first open‑source voice AI studio for cloning, dubbing, transcription and audiobooks.</p>
+        <div class="meta"><span class="pill">~84,600 (+11,700 in past week)</span><span class="pill lang">TypeScript</span></div>
+      </a>
+<a class="card" href="https://trend.ondo.sh/github/2026-10-24/en.html" target="_blank" rel="noopener noreferrer">
+        <h3>stablyai/orca</h3>
+        <p>Agent orchestrator platform managing multiple AI coding agents across worktrees.</p>
+        <div class="meta"><span class="pill">~104,700 (+9,600 in past week)</span><span class="pill lang">TypeScript</span></div>
+      </a>
+<a class="card" href="https://trend.ondo.sh/github/2026-10-24/en.html" target="_blank" rel="noopener noreferrer">
+        <h3>DietrichGebert/ponytail</h3>
+        <p>Prompt‑based skill pack that makes coding agents produce minimal, efficient code.</p>
+        <div class="meta"><span class="pill">~175,400 (+9,400 in past week)</span><span class="pill lang">TypeScript</span></div>
+      </a>
+<a class="card" href="https://trend.ondo.sh/github/2026-10-24/en.html" target="_blank" rel="noopener noreferrer">
+        <h3>xerj‑org/xerj</h3>
+        <p>Local‑first Rust MCP server for code/document search and RAG tasks.</p>
+        <div class="meta"><span class="pill">~15,200 (+7,600 in past week)</span><span class="pill lang">Rust</span></div>
+      </a>
+<a class="card" href="https://trend.ondo.sh/github/2026-10-24/en.html" target="_blank" rel="noopener noreferrer">
+        <h3>boykopovar/AnyPS5</h3>
+        <p>C++ tool to port PS5 executables to Linux/Windows without emulation.</p>
+        <div class="meta"><span class="pill">~47,800 (+6,600 in past week)</span><span class="pill lang">C++</span></div>
+      </a>
+<a class="card" href="https://trend.ondo.sh/github/2026-10-24/en.html" target="_blank" rel="noopener noreferrer">
+        <h3>anomalyco/opencode</h3>
+        <p>Open‑source AI coding agent CLI for writing, editing and testing code.</p>
+        <div class="meta"><span class="pill">~221,000 (+6,000 in past week)</span><span class="pill lang">TypeScript</span></div>
+      </a></div>
+    </section>
+  
+    <footer class="page-footer">Generated automatically by the Daily AI News pipeline.</footer>
+  </div>
+</body>
+</html>
