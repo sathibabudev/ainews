@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI News</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5fb;
+    --bg-accent-1: #eef0ff;
+    --bg-accent-2: #fdf1ff;
+    --surface: #ffffff;
+    --surface-border: #e6e8f5;
+    --text: #171a2b;
+    --text-muted: #5c6178;
+    --accent: #6d5bff;
+    --accent-2: #17b6c9;
+    --accent-3: #e84393;
+    --shadow: 0 1px 2px rgba(23, 26, 43, 0.05), 0 10px 26px rgba(23, 26, 43, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0c16;
+      --bg-accent-1: #12142a;
+      --bg-accent-2: #170f22;
+      --surface: rgba(255, 255, 255, 0.045);
+      --surface-border: rgba(255, 255, 255, 0.09);
+      --text: #eef0fb;
+      --text-muted: #9aa0bd;
+      --accent: #8b7bff;
+      --accent-2: #37e0ea;
+      --accent-3: #ff77b7;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 14px 32px rgba(0, 0, 0, 0.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, var(--bg-accent-1), transparent 60%),
+      radial-gradient(1000px 500px at 110% 10%, var(--bg-accent-2), transparent 55%),
+      var(--bg);
+    background-attachment: fixed;
+    line-height: 1.6;
+  }
+  .page { max-width: 980px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    padding: .3rem .7rem; border-radius: 999px; margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 .5rem;
+    background: linear-gradient(90deg, var(--text), var(--accent) 120%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: -0.02em;
+  }
+  .subtitle { color: var(--text-muted); font-size: 1rem; margin: 0; }
+  .nav-link {
+    display: inline-flex; align-items: center; gap: .4rem;
+    margin-top: 1.25rem;
+    padding: .55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .9rem; font-weight: 500;
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .nav-link:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .takeaways {
+    margin: 2rem 0;
+    padding: 1.4rem 1.6rem;
+    border-radius: 16px;
+    border: 1px solid var(--surface-border);
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .takeaways h2 { margin: 0 0 .75rem; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+  .takeaways ul { margin: 0; padding-left: 1.2rem; }
+  .takeaways li { margin-bottom: .5rem; }
+  .takeaways li:last-child { margin-bottom: 0; }
+  section.group { margin-top: 3rem; }
+  .group-header { display: flex; align-items: baseline; gap: .6rem; margin-bottom: 1.25rem; }
+  .group-header h2 { font-size: 1.3rem; margin: 0; }
+  .group-count { color: var(--text-muted); font-size: .85rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .card {
+    display: flex; flex-direction: column; gap: .6rem;
+    padding: 1.25rem; border-radius: 14px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    text-decoration: none; color: inherit;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card h3 { margin: 0; font-size: 1.05rem; line-height: 1.4; color: var(--text); }
+  .card p { margin: 0; color: var(--text-muted); font-size: .92rem; }
+  .card .meta { margin-top: auto; display: flex; flex-wrap: wrap; gap: .4rem; padding-top: .5rem; }
+  .pill {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .75rem; font-weight: 500;
+    padding: .25rem .55rem; border-radius: 999px;
+    background: color-mix(in srgb, var(--accent-2) 16%, transparent);
+    color: var(--text);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 32%, transparent);
+  }
+  .pill.lang {
+    background: color-mix(in srgb, var(--accent-3) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent-3) 32%, transparent);
+  }
+  .empty {
+    padding: 1.5rem; border-radius: 14px; border: 1px dashed var(--surface-border);
+    color: var(--text-muted); text-align: center;
+  }
+  .archive-list { display: flex; flex-direction: column; gap: .6rem; list-style: none; padding: 0; margin: 0; }
+  .archive-list a {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .85rem 1.1rem; border-radius: 12px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    color: var(--text); text-decoration: none; font-weight: 500;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .archive-list a:hover { transform: translateX(3px); border-color: var(--accent); }
+  .archive-list a::after { content: "\2192"; color: var(--accent); }
+  footer.page-footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--surface-border);
+    color: var(--text-muted); font-size: .85rem;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">Last 30 days · September 29 - October 29, 2026</div>
+      <h1>AI News</h1>
+      <p class="subtitle">Headlines, trending agents, and trending repos — generated October 29, 2026.</p>
+      <a class="nav-link" href="../archive.html">&larr; Back to archive</a>
+    </div>
+    
+    <div class="takeaways"><h2>Top Takeaways</h2><ul><li>Open‑source AI agent and model infrastructure is surging, with major models and frameworks launching or seeing massive attention.</li>
+<li>Security, governance, and infrastructure are key themes—from TPU deployment in production, to security‑audit coding agents, to sandboxed agent runtimes.</li>
+<li>Agent ecosystems are expanding fast: both consumer &#39;always‑on&#39; agents and developer frameworks are gaining traction.</li>
+<li>AI models and companies are making bold financial and public moves—Mistral’s Large 4 release and Anthropic’s IPO filing are standout highlights.</li></ul></div>
+    <section class="group" id="news">
+      <div class="group-header">
+        <h2>📰 Latest AI News</h2>
+        <span class="group-count">6 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.lemonde.fr/en/economy/article/2026/10/06/mistral-ai-unveils-new-ai-model-aimed-at%E2%80%91narrowing%E2%80%91the%E2%80%91gap%E2%80%91with%E2%80%91top%E2%80%91chinese%E2%80%91competitors_6758318_19.html" target="_blank" rel="noopener noreferrer">
+        <h3>Mistral AI unveils Large 4, a new flagship open model</h3>
+        <p>Mistral Large 4 debuts as a top‑tier open model, narrowing the gap with leading models globally.</p>
+        <div class="meta"><span class="pill">Le Monde</span><span class="pill">October 6, 2026</span></div>
+      </a>
+<a class="card" href="https://www.tomshardware.com/tech%E2%80%91industry/artificial%E2%80%91intelligence/googles%E2%80%91tpus%E2%80%91for%E2%80%91ai%E2%80%91workloads%E2%80%91now%E2%80%91run%E2%80%91in%E2%80%91at%E2%80%91metas%E2%80%91data%E2%80%91centers%E2%80%91tpus%E2%80%91sold%E2%80%91to%E2%80%91external%E2%80%91customers%E2%80%91for%E2%80%91the%E2%80%91first%E2%80%91time%E2%80%91threaten%E2%80%91nvidias%E2%80%91market%E2%80%91dominance" target="_blank" rel="noopener noreferrer">
+        <h3>Meta begins deploying Google TPUs in production</h3>
+        <p>Meta confirms production use of Google TPUs for AI workloads, challenging Nvidia’s dominance.</p>
+        <div class="meta"><span class="pill">Tom’s Hardware</span><span class="pill">October 21, 2026</span></div>
+      </a>
+<a class="card" href="https://www.techradar.com/pro/this%E2%80%91crowdfunded%E2%80%91usd109%E2%80%91hub%E2%80%91wants%E2%80%91to%E2%80%91pool%E2%80%91the%E2%80%91ram%E2%80%91in%E2%80%91your%E2%80%91old%E2%80%91pcs%E2%80%91macs%E2%80%91and%E2%80%91phones%E2%80%91to%E2%80%91run%E2%80%91bigger%E2%80%91ai%E2%80%91models%E2%80%91but%E2%80%91the%E2%80%91engine%E2%80%91underneath%E2%80%91is%E2%80%91software%E2%80%91you%E2%80%91can%E2%80%91already%E2%80%91get%E2%80%91for%E2%80%91free" target="_blank" rel="noopener noreferrer">
+        <h3>TradeMAV launches crowdfunded $109 RAM‑pooling hub for AI at home</h3>
+        <p>TradeMAV’s Kickstarter‑style hub pools spare RAM across home devices to run bigger AI models affordably.</p>
+        <div class="meta"><span class="pill">TechRadar</span><span class="pill">October 25, 2026</span></div>
+      </a>
+<a class="card" href="https://www.theatlantic.com/technology/2026/10/ai%E2%80%91midterm%E2%80%91election%E2%80%91voters%E2%80%91chatbots/689103" target="_blank" rel="noopener noreferrer">
+        <h3>AI‑mediated disinformation emerges in 2026 midterm elections</h3>
+        <p>Generative‑AI tools are being used by voters and chatbots to spread misleading political information in the 2026 US midterms.</p>
+        <div class="meta"><span class="pill">The Atlantic</span><span class="pill">October 22, 2026</span></div>
+      </a>
+<a class="card" href="https://www.kiplinger.com/investing/ipos/anthropic%E2%80%91ipo%E2%80%91should%E2%80%91you%E2%80%91buy%E2%80%91ant%E2%80%91stock" target="_blank" rel="noopener noreferrer">
+        <h3>Anthropic files for IPO ahead of November launch</h3>
+        <p>Anthropic submits S‑1, preparing for a November IPO with potential $2 trillion valuation.</p>
+        <div class="meta"><span class="pill">Kiplinger</span><span class="pill">October 26, 2026</span></div>
+      </a>
+<a class="card" href="https://www.theatlantic.com/technology/2026/10/ai%E2%80%91agent%E2%80%91chaos%E2%80%91e%E2%80%91commerce/689010" target="_blank" rel="noopener noreferrer">
+        <h3>‘Always‑on’ AI agents boom is unleashing chaos</h3>
+        <p>The growing wave of consumer always‑on AI assistants is fueling unexpected issues and risks, signaling agents are here but the ecosystem isn&#39;t ready.</p>
+        <div class="meta"><span class="pill">The Atlantic</span><span class="pill">October 2026</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="agents">
+      <div class="group-header">
+        <h2>🤖 Trending AI Agents</h2>
+        <span class="group-count">4 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.theatlantic.com/technology/2026/10/ai%E2%80%91agent%E2%80%91chaos%E2%80%91e%E2%80%91commerce/689010" target="_blank" rel="noopener noreferrer">
+        <h3>Meta’s personal agent Muse</h3>
+        <p>A consumer‑facing always‑on AI assistant from Meta gaining attention as part of the ‘always‑on’ agent trend. It exploded in popularity amid the rise of always‑on agents and a competitive market including OpenAI, xAI, and Google.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://apnews.com/article/77b6b8888145869206996d7509d24256" target="_blank" rel="noopener noreferrer">
+        <h3>OpenAI’s always‑on AI agent</h3>
+        <p>An agent designed to proactively complete tasks on behalf of users, competing with Meta’s Muse. Launched after OpenAI shelved a model over safety concerns—highlighting a push into proactive agents.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://github.com/martimfasantos/ai%E2%80%91agents%E2%80%91frameworks" target="_blank" rel="noopener noreferrer">
+        <h3>LangGraph / CrewAI / OpenAI Agents SDK (comparison repo)</h3>
+        <p>A comparative resource for top AI agent frameworks and SDKs. Developers are seeking clarity amid many frameworks; this repo helps compare features side‑by‑side.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.techradar.com/pro/this%E2%80%91crowdfunded%E2%80%91usd109%E2%80%91hub%E2%80%91wants%E2%80%91to%E2%80%91pool%E2%80%91the%E2%80%91ram%E2%80%91in%E2%80%91your%E2%80%91old%E2%80%91pcs%E2%80%91macs%E2%80%91and%E2%80%91phones%E2%80%91to%E2%80%91run%E2%80%91bigger%E2%80%91ai%E2%80%91models%E2%80%91but%E2%80%91the%E2%80%91engine%E2%80%91underneath%E2%80%91is%E2%80%91software%E2%80%91you%E2%80%91can%E2%80%91already%E2%80%91get%E2%80%91for%E2%80%91free" target="_blank" rel="noopener noreferrer">
+        <h3>TradeMAV’s RAM‑pooling hub (Agent‑like infrastructure)</h3>
+        <p>Hub that enables pooling RAM across devices to run larger AI models—could enable more powerful local agents. Innovative solution to hardware constraints, democratizing local AI model deployment.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="repos">
+      <div class="group-header">
+        <h2>⭐ Trending AI GitHub Repos</h2>
+        <span class="group-count">8 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://github.com/cloudflare/security%E2%80%91audit%E2%80%91skill" target="_blank" rel="noopener noreferrer">
+        <h3>cloudflare/security‑audit‑skill</h3>
+        <p>Coding‑agent skill for multi‑phase security audits.</p>
+        <div class="meta"><span class="pill">about 51.6k (+15.2k in 7 days, +28.9k in 30 days)</span><span class="pill lang">not specified</span></div>
+      </a>
+<a class="card" href="https://github.com/debpalash/VoiceStudio" target="_blank" rel="noopener noreferrer">
+        <h3>debpalash/VoiceStudio</h3>
+        <p>Open‑source, local alternative to ElevenLabs for voice cloning and voice design.</p>
+        <div class="meta"><span class="pill">about 93.0k (+12.6k 7 day gain)</span><span class="pill lang">not specified</span></div>
+      </a>
+<a class="card" href="https://github.com/DietrichGebert/ponytail" target="_blank" rel="noopener noreferrer">
+        <h3>DietrichGebert/ponytail</h3>
+        <p>Makes your AI agent think like the laziest senior dev in the room.</p>
+        <div class="meta"><span class="pill">about 179.2k (+7.6k 7 day gain)</span><span class="pill lang">not specified</span></div>
+      </a>
+<a class="card" href="https://github.com/Graphify%E2%80%91Labs/graphify" target="_blank" rel="noopener noreferrer">
+        <h3>Graphify‑Labs/graphify</h3>
+        <p>Turns codebases into queryable knowledge graphs with docs, schemas, configs, PDFs.</p>
+        <div class="meta"><span class="pill">about 137.8k (+6.2k 7 day gain)</span><span class="pill lang">not specified</span></div>
+      </a>
+<a class="card" href="https://github.com/anomalyco/opencode" target="_blank" rel="noopener noreferrer">
+        <h3>anomalyco/opencode</h3>
+        <p>The open‑source coding agent.</p>
+        <div class="meta"><span class="pill">about 222.7k (+3.1k 7 day gain)</span><span class="pill lang">not specified</span></div>
+      </a>
+<a class="card" href="https://github.com/paperclipai/paperclip" target="_blank" rel="noopener noreferrer">
+        <h3>paperclipai/paperclip</h3>
+        <p>Agent orchestration platform used at work.</p>
+        <div class="meta"><span class="pill">about 108.3k (+2.6k 7 day gain)</span><span class="pill lang">not specified</span></div>
+      </a>
+<a class="card" href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener noreferrer">
+        <h3>TauricResearch/TradingAgents</h3>
+        <p>Multi‑Agents LLM Financial Trading Framework.</p>
+        <div class="meta"><span class="pill">about 117.9k (+5.3k 7 day gain)</span><span class="pill lang">not specified</span></div>
+      </a>
+<a class="card" href="https://github.com/NVIDIA/OpenShell" target="_blank" rel="noopener noreferrer">
+        <h3>NVIDIA/OpenShell</h3>
+        <p>Secure AI agent runtime.</p>
+        <div class="meta"><span class="pill">not specified (+3.5k over 30 days)</span><span class="pill lang">not specified</span></div>
+      </a></div>
+    </section>
+  
+    <footer class="page-footer">Generated automatically by the Daily AI News pipeline.</footer>
+  </div>
+</body>
+</html>
