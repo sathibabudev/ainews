@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI News</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5fb;
+    --bg-accent-1: #eef0ff;
+    --bg-accent-2: #fdf1ff;
+    --surface: #ffffff;
+    --surface-border: #e6e8f5;
+    --text: #171a2b;
+    --text-muted: #5c6178;
+    --accent: #6d5bff;
+    --accent-2: #17b6c9;
+    --accent-3: #e84393;
+    --shadow: 0 1px 2px rgba(23, 26, 43, 0.05), 0 10px 26px rgba(23, 26, 43, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0c16;
+      --bg-accent-1: #12142a;
+      --bg-accent-2: #170f22;
+      --surface: rgba(255, 255, 255, 0.045);
+      --surface-border: rgba(255, 255, 255, 0.09);
+      --text: #eef0fb;
+      --text-muted: #9aa0bd;
+      --accent: #8b7bff;
+      --accent-2: #37e0ea;
+      --accent-3: #ff77b7;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 14px 32px rgba(0, 0, 0, 0.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, var(--bg-accent-1), transparent 60%),
+      radial-gradient(1000px 500px at 110% 10%, var(--bg-accent-2), transparent 55%),
+      var(--bg);
+    background-attachment: fixed;
+    line-height: 1.6;
+  }
+  .page { max-width: 980px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    padding: .3rem .7rem; border-radius: 999px; margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 .5rem;
+    background: linear-gradient(90deg, var(--text), var(--accent) 120%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: -0.02em;
+  }
+  .subtitle { color: var(--text-muted); font-size: 1rem; margin: 0; }
+  .nav-link {
+    display: inline-flex; align-items: center; gap: .4rem;
+    margin-top: 1.25rem;
+    padding: .55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .9rem; font-weight: 500;
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .nav-link:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .takeaways {
+    margin: 2rem 0;
+    padding: 1.4rem 1.6rem;
+    border-radius: 16px;
+    border: 1px solid var(--surface-border);
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .takeaways h2 { margin: 0 0 .75rem; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+  .takeaways ul { margin: 0; padding-left: 1.2rem; }
+  .takeaways li { margin-bottom: .5rem; }
+  .takeaways li:last-child { margin-bottom: 0; }
+  section.group { margin-top: 3rem; }
+  .group-header { display: flex; align-items: baseline; gap: .6rem; margin-bottom: 1.25rem; }
+  .group-header h2 { font-size: 1.3rem; margin: 0; }
+  .group-count { color: var(--text-muted); font-size: .85rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .card {
+    display: flex; flex-direction: column; gap: .6rem;
+    padding: 1.25rem; border-radius: 14px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    text-decoration: none; color: inherit;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card h3 { margin: 0; font-size: 1.05rem; line-height: 1.4; color: var(--text); }
+  .card p { margin: 0; color: var(--text-muted); font-size: .92rem; }
+  .card .meta { margin-top: auto; display: flex; flex-wrap: wrap; gap: .4rem; padding-top: .5rem; }
+  .pill {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .75rem; font-weight: 500;
+    padding: .25rem .55rem; border-radius: 999px;
+    background: color-mix(in srgb, var(--accent-2) 16%, transparent);
+    color: var(--text);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 32%, transparent);
+  }
+  .pill.lang {
+    background: color-mix(in srgb, var(--accent-3) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent-3) 32%, transparent);
+  }
+  .empty {
+    padding: 1.5rem; border-radius: 14px; border: 1px dashed var(--surface-border);
+    color: var(--text-muted); text-align: center;
+  }
+  .archive-list { display: flex; flex-direction: column; gap: .6rem; list-style: none; padding: 0; margin: 0; }
+  .archive-list a {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .85rem 1.1rem; border-radius: 12px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    color: var(--text); text-decoration: none; font-weight: 500;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .archive-list a:hover { transform: translateX(3px); border-color: var(--accent); }
+  .archive-list a::after { content: "\2192"; color: var(--accent); }
+  footer.page-footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--surface-border);
+    color: var(--text-muted); font-size: .85rem;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">Last 30 days · October 1 – October 30, 2026</div>
+      <h1>AI News</h1>
+      <p class="subtitle">Headlines, trending agents, and trending repos — generated October 30, 2026.</p>
+      <a class="nav-link" href="../archive.html">&larr; Back to archive</a>
+    </div>
+    
+    <div class="takeaways"><h2>Top Takeaways</h2><ul><li>AI agents are increasingly central to both innovation and security concerns, spanning breakthroughs and breaches across industries.</li>
+<li>Funding and IPO discussions continue to shape the AI landscape, with major players under scrutiny and others raising sizable rounds.</li>
+<li>GitHub reveals strong momentum in agent frameworks, plugin directories, and memory-enhancing tools, with several projects seeing explosive star growth.</li>
+<li>Organizations and enterprises are upgrading security to treat AI agents as potential insider threats amid rising misuse and vulnerabilities.</li>
+<li>The AI agent ecosystem is maturing rapidly—from toolkits for developers to consumer-focused agents—reflecting broad-based adoption.</li></ul></div>
+    <section class="group" id="news">
+      <div class="group-header">
+        <h2>📰 Latest AI News</h2>
+        <span class="group-count">6 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.tomshardware.com/tech-industry/cyber-security/microsoft-says-china-aligned-hackers-used-ai-agents-in-connectwise-supply-chain-attack-agents-attempted-sign-ins-at-more-than-2-250-microsoft-365-tenants-with-some-of-the-groups-attacks-reaching-privileged-access-in-under-three-hours" target="_blank" rel="noopener noreferrer">
+        <h3>China‑aligned hackers deploy AI agents in massive ConnectWise supply chain attack</h3>
+        <p>Microsoft reports that China‑state‑linked actor Storm‑0940 used the open‑source agentic AI framework ARTEX to breach ConnectWise cloud apps and execute rapid sign‑ins across customer tenants.</p>
+        <div class="meta"><span class="pill">Tom’s Hardware</span><span class="pill">October 23, 2026</span></div>
+      </a>
+<a class="card" href="https://www.itpro.com/security/88-percent-of-uk-firms-have-had-an-agentic-security-incident-in-the-last-year-servicenow-warns-more-will-come" target="_blank" rel="noopener noreferrer">
+        <h3>88% of UK firms have had an ‘agentic security incident’ in the last year</h3>
+        <p>ServiceNow warns that widespread deployment of AI agents has exposed organizations, with legacy security frameworks unable to keep up.</p>
+        <div class="meta"><span class="pill">ITPro</span><span class="pill">October 23, 2026</span></div>
+      </a>
+<a class="card" href="https://www.techradar.com/pro/security/microsoft-admits-frontier-models-cant-be-trusted-unveils-new-security-tools-to-treat-ai-agents-as-insider-threats" target="_blank" rel="noopener noreferrer">
+        <h3>Microsoft unveils security tools to treat AI agents as insider threats</h3>
+        <p>Microsoft introduces “Dynamic Permissions” and “Dynamic Agent Risk” to monitor agent behavior and tighten access control amid rising concerns about agent misuse.</p>
+        <div class="meta"><span class="pill">TechRadar</span><span class="pill">October 20, 2026</span></div>
+      </a>
+<a class="card" href="https://apnews.com/article/e15c4c51eff9e66a51dfee29fda91577" target="_blank" rel="noopener noreferrer">
+        <h3>One Tech Tip: How to get started with AI agents, and which are best for specific tasks</h3>
+        <p>AP News provides guidance on choosing AI agents tailored to particular use cases, noting that no single agent can cover every need.</p>
+        <div class="meta"><span class="pill">AP News</span><span class="pill">October 28, 2026</span></div>
+      </a>
+<a class="card" href="https://www.axios.com/2026/10/05/ai-agents-consumers-business" target="_blank" rel="noopener noreferrer">
+        <h3>Axios C‑Suite: The AI agent economy unfolds</h3>
+        <p>Axios explores how AI agents running on cloud infrastructure are expanding into consumer and enterprise use cases.</p>
+        <div class="meta"><span class="pill">Axios</span><span class="pill">October 5, 2026</span></div>
+      </a>
+<a class="card" href="https://apnews.com/article/f590b51073d8977a984c7c42b8f2a7a2" target="_blank" rel="noopener noreferrer">
+        <h3>A timeline of developments in AI safety since the attack on Hugging Face</h3>
+        <p>AP News traces AI agent–associated safety incidents, including hacking attempts and model delays tied to GPT‑6.1 Astra caution.</p>
+        <div class="meta"><span class="pill">AP News</span><span class="pill">October 10, 2026</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="agents">
+      <div class="group-header">
+        <h2>🤖 Trending AI Agents</h2>
+        <span class="group-count">4 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.tomshardware.com/tech-industry/cyber-security/microsoft-says-china-aligned-hackers-used-ai-agents-in-connectwise-supply-chain-attack-agents-attempted-sign-ins-at-more-than-2-250-microsoft-365-tenants-with-some-of-the-groups-attacks-reaching-privileged-access-in-under-three-hours" target="_blank" rel="noopener noreferrer">
+        <h3>ARTEX (agentic AI framework)</h3>
+        <p>An open‑source agentic AI framework used by attackers in the ConnectWise breach; demonstrates both capabilities and security risk. Featured in a major supply‑chain attack showing real‑world use of agent frameworks.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://gettoolrank.com/trending/" target="_blank" rel="noopener noreferrer">
+        <h3>Podium AI agents</h3>
+        <p>Agents that automate calls, lead responses, appointment booking and follow‑ups for local businesses. Podium rebuilt its business software around AI agents for services industries.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.techradar.com/pro/security/microsoft-admits-frontier-models-cant-be-trusted-unveils-new-security-tools-to-treat-ai-agents-as-insider-threats" target="_blank" rel="noopener noreferrer">
+        <h3>Microsoft Dynamic Permissions / Dynamic Agent Risk</h3>
+        <p>Security tools that treat AI agents as potential insider threats, controlling permissions and assessing risk in real time. New enterprise security controls in response to agent misuse and vulnerabilities.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://apnews.com/article/e15c4c51eff9e66a51dfee29fda91577" target="_blank" rel="noopener noreferrer">
+        <h3>General consumer AI agents (AP News guidance)</h3>
+        <p>Consumer‑friendly AI agents targeting specific tasks, with guidance on choosing them since no single agent does everything. Growing consumer interest and media guidance on selecting AI agents for everyday tasks.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="repos">
+      <div class="group-header">
+        <h2>⭐ Trending AI GitHub Repos</h2>
+        <span class="group-count">8 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://github.com/morluto/rea" target="_blank" rel="noopener noreferrer">
+        <h3>morluto/rea</h3>
+        <p>Reverse‑engineering toolkit with agents to inspect apps and binaries.</p>
+        <div class="meta"><span class="pill">~277 k total, +239 k this week</span><span class="pill lang">TypeScript</span></div>
+      </a>
+<a class="card" href="https://github.com/storytold/artcraft" target="_blank" rel="noopener noreferrer">
+        <h3>storytold/artcraft</h3>
+        <p>Intentional crafting engine for artists, designers and filmmakers (AI images/video)</p>
+        <div class="meta"><span class="pill">~29 k total, +22 k this week</span><span class="pill lang">Rust</span></div>
+      </a>
+<a class="card" href="https://github.com/cloudflare/security-audit-skill" target="_blank" rel="noopener noreferrer">
+        <h3>cloudflare/security‑audit‑skill</h3>
+        <p>Coding‑agent skill for multi‑phase security audits with machine‑readable findings.</p>
+        <div class="meta"><span class="pill">~52 k total, +16 k this week</span><span class="pill lang">JavaScript</span></div>
+      </a>
+<a class="card" href="https://github.com/stablyai/orca" target="_blank" rel="noopener noreferrer">
+        <h3>stablyai/orca</h3>
+        <p>Desktop/mobile tool to run and monitor a fleet of coding agents with your own subscriptions.</p>
+        <div class="meta"><span class="pill">~94 k</span><span class="pill lang"></span></div>
+      </a>
+<a class="card" href="https://github.com/akitaonrails/ai-memory" target="_blank" rel="noopener noreferrer">
+        <h3>akitaonrails/ai‑memory</h3>
+        <p>Long‑term memory for coding agents to hand off work between vendors.</p>
+        <div class="meta"><span class="pill">+3.3 k this week, ~23.5 k total</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://github.com/anthropics/claude-plugins-official" target="_blank" rel="noopener noreferrer">
+        <h3>anthropics/claude‑plugins‑official</h3>
+        <p>Official managed directory of Claude Code plugins.</p>
+        <div class="meta"><span class="pill">+5.6 k this week, ~? total</span><span class="pill lang"></span></div>
+      </a>
+<a class="card" href="https://github.com/anthropics/knowledge-work-plugins" target="_blank" rel="noopener noreferrer">
+        <h3>anthropics/knowledge‑work‑plugins</h3>
+        <p>Open‑source plugins for knowledge workers using Claude Cowork.</p>
+        <div class="meta"><span class="pill">~33.7 k total, +2.6 k this week</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer">
+        <h3>OpenClaw / openclaw/openclaw</h3>
+        <p>Agent and workflow framework for planning, tools, multi‑step tasks.</p>
+        <div class="meta"><span class="pill">~392 k</span><span class="pill lang"></span></div>
+      </a></div>
+    </section>
+  
+    <footer class="page-footer">Generated automatically by the Daily AI News pipeline.</footer>
+  </div>
+</body>
+</html>
