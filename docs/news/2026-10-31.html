@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI News</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5fb;
+    --bg-accent-1: #eef0ff;
+    --bg-accent-2: #fdf1ff;
+    --surface: #ffffff;
+    --surface-border: #e6e8f5;
+    --text: #171a2b;
+    --text-muted: #5c6178;
+    --accent: #6d5bff;
+    --accent-2: #17b6c9;
+    --accent-3: #e84393;
+    --shadow: 0 1px 2px rgba(23, 26, 43, 0.05), 0 10px 26px rgba(23, 26, 43, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0c16;
+      --bg-accent-1: #12142a;
+      --bg-accent-2: #170f22;
+      --surface: rgba(255, 255, 255, 0.045);
+      --surface-border: rgba(255, 255, 255, 0.09);
+      --text: #eef0fb;
+      --text-muted: #9aa0bd;
+      --accent: #8b7bff;
+      --accent-2: #37e0ea;
+      --accent-3: #ff77b7;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 14px 32px rgba(0, 0, 0, 0.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, var(--bg-accent-1), transparent 60%),
+      radial-gradient(1000px 500px at 110% 10%, var(--bg-accent-2), transparent 55%),
+      var(--bg);
+    background-attachment: fixed;
+    line-height: 1.6;
+  }
+  .page { max-width: 980px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    padding: .3rem .7rem; border-radius: 999px; margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 .5rem;
+    background: linear-gradient(90deg, var(--text), var(--accent) 120%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: -0.02em;
+  }
+  .subtitle { color: var(--text-muted); font-size: 1rem; margin: 0; }
+  .nav-link {
+    display: inline-flex; align-items: center; gap: .4rem;
+    margin-top: 1.25rem;
+    padding: .55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .9rem; font-weight: 500;
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .nav-link:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .takeaways {
+    margin: 2rem 0;
+    padding: 1.4rem 1.6rem;
+    border-radius: 16px;
+    border: 1px solid var(--surface-border);
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .takeaways h2 { margin: 0 0 .75rem; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+  .takeaways ul { margin: 0; padding-left: 1.2rem; }
+  .takeaways li { margin-bottom: .5rem; }
+  .takeaways li:last-child { margin-bottom: 0; }
+  section.group { margin-top: 3rem; }
+  .group-header { display: flex; align-items: baseline; gap: .6rem; margin-bottom: 1.25rem; }
+  .group-header h2 { font-size: 1.3rem; margin: 0; }
+  .group-count { color: var(--text-muted); font-size: .85rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .card {
+    display: flex; flex-direction: column; gap: .6rem;
+    padding: 1.25rem; border-radius: 14px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    text-decoration: none; color: inherit;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card h3 { margin: 0; font-size: 1.05rem; line-height: 1.4; color: var(--text); }
+  .card p { margin: 0; color: var(--text-muted); font-size: .92rem; }
+  .card .meta { margin-top: auto; display: flex; flex-wrap: wrap; gap: .4rem; padding-top: .5rem; }
+  .pill {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .75rem; font-weight: 500;
+    padding: .25rem .55rem; border-radius: 999px;
+    background: color-mix(in srgb, var(--accent-2) 16%, transparent);
+    color: var(--text);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 32%, transparent);
+  }
+  .pill.lang {
+    background: color-mix(in srgb, var(--accent-3) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent-3) 32%, transparent);
+  }
+  .empty {
+    padding: 1.5rem; border-radius: 14px; border: 1px dashed var(--surface-border);
+    color: var(--text-muted); text-align: center;
+  }
+  .archive-list { display: flex; flex-direction: column; gap: .6rem; list-style: none; padding: 0; margin: 0; }
+  .archive-list a {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .85rem 1.1rem; border-radius: 12px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    color: var(--text); text-decoration: none; font-weight: 500;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .archive-list a:hover { transform: translateX(3px); border-color: var(--accent); }
+  .archive-list a::after { content: "\2192"; color: var(--accent); }
+  footer.page-footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--surface-border);
+    color: var(--text-muted); font-size: .85rem;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">Last 30 days · October 1 – October 31, 2026</div>
+      <h1>AI News</h1>
+      <p class="subtitle">Headlines, trending agents, and trending repos — generated October 31, 2026.</p>
+      <a class="nav-link" href="../archive.html">&larr; Back to archive</a>
+    </div>
+    
+    <div class="takeaways"><h2>Top Takeaways</h2><ul><li>October saw massive AI investment with OpenAI alone raising some $20 billion, and emergence of new models and frameworks driving the move from prototypes to production.</li>
+<li>Agent frameworks and tools are rapidly evolving—LangGraph, AgentScope, Dify, n8n and others showing strong momentum in adoption and real-world readiness.</li>
+<li>Open-source activity around AI agents is surging: dozens of new repos topping GitHub trending charts, with agent skills and orchestration tooling gaining especially fast traction.</li></ul></div>
+    <section class="group" id="news">
+      <div class="group-header">
+        <h2>📰 Latest AI News</h2>
+        <span class="group-count">8 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://aifunding.me/roundups/october-2026" target="_blank" rel="noopener noreferrer">
+        <h3>OpenAI raises $20 billion in October funding round</h3>
+        <p>OpenAI closed an approximately $20 billion funding round, the largest AI funding deal in October 2026.</p>
+        <div class="meta"><span class="pill">AI Funding Roundup October 2026</span><span class="pill">October 1, 2026</span></div>
+      </a>
+<a class="card" href="https://aifunding.me/roundups/october-2026" target="_blank" rel="noopener noreferrer">
+        <h3>DeepSeek, Ramp among top funded AI firms this month</h3>
+        <p>DeepSeek raised $15 billion and Ramp raised $1.9 billion in October funding rounds.</p>
+        <div class="meta"><span class="pill">AI Funding Roundup October 2026</span><span class="pill">October 22 2026</span></div>
+      </a>
+<a class="card" href="https://valueaddvc.com/blog/october-2026-ai-funding-rounds-tenstorrent-typesafe-modal" target="_blank" rel="noopener noreferrer">
+        <h3>Tenstorrent raises $1.5 billion Series E at $6.2 billion valuation</h3>
+        <p>AI chip maker Tenstorrent secured $1.5 billion in Series E funding at a $6.2 billion valuation on October 19.</p>
+        <div class="meta"><span class="pill">Value Add VC report</span><span class="pill">October 19 2026</span></div>
+      </a>
+<a class="card" href="https://www.axios.com/2026/10/12/meta-new-ai-models-anthropic-openai" target="_blank" rel="noopener noreferrer">
+        <h3>Meta launches frontier-class AI models Muse Wonder and Muse Wonder Full</h3>
+        <p>Meta unveiled Muse Wonder and Muse Wonder Full, aiming to compete with OpenAI, Anthropic and Google in agent, memory and coding tasks.</p>
+        <div class="meta"><span class="pill">Axios</span><span class="pill">October 12 2026</span></div>
+      </a>
+<a class="card" href="https://www.lemonde.fr/en/economy/article/2026/10/06/mistral-ai-unveils-new-ai-model-aimed-at-narrowing-the-gap-with-top-chinese-competitors_6758318_19.html" target="_blank" rel="noopener noreferrer">
+        <h3>Mistral AI unveils Mistral Large 4 flagship model</h3>
+        <p>Mistral released its new flagship model Mistral Large 4 on October 6, narrowing the gap with top Chinese competitors.</p>
+        <div class="meta"><span class="pill">Le Monde</span><span class="pill">October 6 2026</span></div>
+      </a>
+<a class="card" href="https://en.wikipedia.org/wiki/OpenAI_bulk_release_of_mathematical_papers" target="_blank" rel="noopener noreferrer">
+        <h3>OpenAI releases 722 AI‑generated mathematical manuscripts solving long‑standing problems</h3>
+        <p>On October 6, OpenAI published 722 AI‑written mathematical papers claiming solutions to major unsolved problems, including Navier‑Stokes, available via GitHub.</p>
+        <div class="meta"><span class="pill">Wikipedia</span><span class="pill">October 6 2026</span></div>
+      </a>
+<a class="card" href="https://www.theatlantic.com/podcasts/2026/10/is-it-time-to-rebuild-the-internet/689218/" target="_blank" rel="noopener noreferrer">
+        <h3>Black October: AI‑discovered cybersecurity flaws disrupt model training</h3>
+        <p>Security researchers dubbed October “Black October” after AI‑found software flaws triggered widespread concern and delayed OpenAI’s frontier model training.</p>
+        <div class="meta"><span class="pill">The Atlantic</span><span class="pill">October 30 2026</span></div>
+      </a>
+<a class="card" href="https://apnews.com/article/e11a2240fc3283c4507d44b9833f30a2" target="_blank" rel="noopener noreferrer">
+        <h3>Broadcom helps Anthropic access XPU AI accelerators in $63 billion deal</h3>
+        <p>Broadcom signed a $63 billion financing deal to help Anthropic gain access to its XPU AI accelerators and networking solutions.</p>
+        <div class="meta"><span class="pill">AP News</span><span class="pill">October 27 2026</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="agents">
+      <div class="group-header">
+        <h2>🤖 Trending AI Agents</h2>
+        <span class="group-count">6 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.getreadyforagents.com/agentindex/frameworks/" target="_blank" rel="noopener noreferrer">
+        <h3>LangGraph</h3>
+        <p>Graph‑based agent orchestration framework from LangChain team. High real‑world demand and usage in October driven by agent orchestration needs.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://index.devtoolwatch.com/categories/agent-frameworks/" target="_blank" rel="noopener noreferrer">
+        <h3>AgentScope</h3>
+        <p>Python agent framework with SDK, web UI, agent service backend. Strong momentum in demand and fastest growth among code‑first frameworks.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://gravity.fast/data/ai-agent-framework-leaderboard/" target="_blank" rel="noopener noreferrer">
+        <h3>Dify</h3>
+        <p>Open‑source LLM app platform for agentic workflows, RAG pipelines and agents. Top composite score across agent frameworks in popularity, commits and releases.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://gravity.fast/data/ai-agent-framework-leaderboard/" target="_blank" rel="noopener noreferrer">
+        <h3>n8n</h3>
+        <p>Visual builder for agentic workflows and integrations. Massive star growth largest among frameworks in last 30 days.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://index.devtoolwatch.com/categories/agent-frameworks/" target="_blank" rel="noopener noreferrer">
+        <h3>OpenAI Agents SDK</h3>
+        <p>Python framework for multi‑agent workflows with tools, handoffs, guardrails. High downloads and usage growth this week.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://index.devtoolwatch.com/categories/agent-frameworks/" target="_blank" rel="noopener noreferrer">
+        <h3>Mastra</h3>
+        <p>TypeScript framework for AI agents with workflows, memory, model routing, MCP servers. High download growth and strong adoption momentum.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="repos">
+      <div class="group-header">
+        <h2>⭐ Trending AI GitHub Repos</h2>
+        <span class="group-count">7 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://github.com/HKUDS/DeepTutor" target="_blank" rel="noopener noreferrer">
+        <h3>HKUDS/DeepTutor</h3>
+        <p>Lifelong personalized tutoring agent.</p>
+        <div class="meta"><span class="pill">≈50.8 k (gained 1.9 k today)</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://github.com/obra/superpowers" target="_blank" rel="noopener noreferrer">
+        <h3>obra/superpowers</h3>
+        <p>Agentic skills framework &amp; development methodology.</p>
+        <div class="meta"><span class="pill">≈309 k (gained 1 k today)</span><span class="pill lang">Shell</span></div>
+      </a>
+<a class="card" href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener noreferrer">
+        <h3>pbakaus/impeccable</h3>
+        <p>Design vocabulary for coding agent: steer, review, audit.</p>
+        <div class="meta"><span class="pill">≈95.9 k (gained 2.9 k today)</span><span class="pill lang">Rust</span></div>
+      </a>
+<a class="card" href="https://github.com/Ebony%E2%80%91Vinyl/dsh%E2%80%91our%E2%80%91free%E2%80%91model" target="_blank" rel="noopener noreferrer">
+        <h3>Ebony‑Vinyl/dsh‑our‑free‑model</h3>
+        <p>Plugin giving access to frontier models without login/API key.</p>
+        <div class="meta"><span class="pill">39 k (≈1.1 k/day)</span><span class="pill lang">JavaScript</span></div>
+      </a>
+<a class="card" href="https://github.com/yetone/magpie" target="_blank" rel="noopener noreferrer">
+        <h3>yetone/magpie</h3>
+        <p>Menu bar tool for agent models selection (Codex, Claude Code).</p>
+        <div class="meta"><span class="pill">19 k (≈526/day)</span><span class="pill lang">Go</span></div>
+      </a>
+<a class="card" href="https://github.com/Jakeschincariol/replica%E2%80%91skill" target="_blank" rel="noopener noreferrer">
+        <h3>Jakeschincariol/replica‑skill</h3>
+        <p>Eleven free skills to clone, test, reverse‑engineer apps.</p>
+        <div class="meta"><span class="pill">6.5 k (≈241/day)</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://github.com/Leonxlnx/earshot" target="_blank" rel="noopener noreferrer">
+        <h3>Leonxlnx/earshot</h3>
+        <p>Give coding agents ability to hear, review and make sound.</p>
+        <div class="meta"><span class="pill">3.3 k (≈217/day)</span><span class="pill lang">Python</span></div>
+      </a></div>
+    </section>
+  
+    <footer class="page-footer">Generated automatically by the Daily AI News pipeline.</footer>
+  </div>
+</body>
+</html>
