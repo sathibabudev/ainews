@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI News</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5fb;
+    --bg-accent-1: #eef0ff;
+    --bg-accent-2: #fdf1ff;
+    --surface: #ffffff;
+    --surface-border: #e6e8f5;
+    --text: #171a2b;
+    --text-muted: #5c6178;
+    --accent: #6d5bff;
+    --accent-2: #17b6c9;
+    --accent-3: #e84393;
+    --shadow: 0 1px 2px rgba(23, 26, 43, 0.05), 0 10px 26px rgba(23, 26, 43, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0c16;
+      --bg-accent-1: #12142a;
+      --bg-accent-2: #170f22;
+      --surface: rgba(255, 255, 255, 0.045);
+      --surface-border: rgba(255, 255, 255, 0.09);
+      --text: #eef0fb;
+      --text-muted: #9aa0bd;
+      --accent: #8b7bff;
+      --accent-2: #37e0ea;
+      --accent-3: #ff77b7;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 14px 32px rgba(0, 0, 0, 0.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, var(--bg-accent-1), transparent 60%),
+      radial-gradient(1000px 500px at 110% 10%, var(--bg-accent-2), transparent 55%),
+      var(--bg);
+    background-attachment: fixed;
+    line-height: 1.6;
+  }
+  .page { max-width: 980px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    padding: .3rem .7rem; border-radius: 999px; margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 .5rem;
+    background: linear-gradient(90deg, var(--text), var(--accent) 120%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: -0.02em;
+  }
+  .subtitle { color: var(--text-muted); font-size: 1rem; margin: 0; }
+  .nav-link {
+    display: inline-flex; align-items: center; gap: .4rem;
+    margin-top: 1.25rem;
+    padding: .55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .9rem; font-weight: 500;
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .nav-link:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .takeaways {
+    margin: 2rem 0;
+    padding: 1.4rem 1.6rem;
+    border-radius: 16px;
+    border: 1px solid var(--surface-border);
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .takeaways h2 { margin: 0 0 .75rem; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+  .takeaways ul { margin: 0; padding-left: 1.2rem; }
+  .takeaways li { margin-bottom: .5rem; }
+  .takeaways li:last-child { margin-bottom: 0; }
+  section.group { margin-top: 3rem; }
+  .group-header { display: flex; align-items: baseline; gap: .6rem; margin-bottom: 1.25rem; }
+  .group-header h2 { font-size: 1.3rem; margin: 0; }
+  .group-count { color: var(--text-muted); font-size: .85rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .card {
+    display: flex; flex-direction: column; gap: .6rem;
+    padding: 1.25rem; border-radius: 14px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    text-decoration: none; color: inherit;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card h3 { margin: 0; font-size: 1.05rem; line-height: 1.4; color: var(--text); }
+  .card p { margin: 0; color: var(--text-muted); font-size: .92rem; }
+  .card .meta { margin-top: auto; display: flex; flex-wrap: wrap; gap: .4rem; padding-top: .5rem; }
+  .pill {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .75rem; font-weight: 500;
+    padding: .25rem .55rem; border-radius: 999px;
+    background: color-mix(in srgb, var(--accent-2) 16%, transparent);
+    color: var(--text);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 32%, transparent);
+  }
+  .pill.lang {
+    background: color-mix(in srgb, var(--accent-3) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent-3) 32%, transparent);
+  }
+  .empty {
+    padding: 1.5rem; border-radius: 14px; border: 1px dashed var(--surface-border);
+    color: var(--text-muted); text-align: center;
+  }
+  .archive-list { display: flex; flex-direction: column; gap: .6rem; list-style: none; padding: 0; margin: 0; }
+  .archive-list a {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .85rem 1.1rem; border-radius: 12px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    color: var(--text); text-decoration: none; font-weight: 500;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .archive-list a:hover { transform: translateX(3px); border-color: var(--accent); }
+  .archive-list a::after { content: "\2192"; color: var(--accent); }
+  footer.page-footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--surface-border);
+    color: var(--text-muted); font-size: .85rem;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">Last 30 days · October 4 - November 3, 2026</div>
+      <h1>AI News</h1>
+      <p class="subtitle">Headlines, trending agents, and trending repos — generated November 3, 2026.</p>
+      <a class="nav-link" href="../archive.html">&larr; Back to archive</a>
+    </div>
+    
+    <div class="takeaways"><h2>Top Takeaways</h2><ul><li>AI funding continues at pace with stealth AI startups raising significant seed rounds this week.</li>
+<li>Anthropic’s IPO prospects and revenue breakdown highlight shifting business models in AI.</li>
+<li>Multi-agent coordination and orchestration are increasingly recognized as key to scaling beyond model parameter growth.</li>
+<li>GitHub infrastructure is under strain from AI-generated code, prompting massive scaling of compute and storage.</li>
+<li>AI agents and frameworks like LangChain, Matt Pocock’s Skills, and Claude‑mem are gaining strong traction as developer tools.</li></ul></div>
+    <section class="group" id="news">
+      <div class="group-header">
+        <h2>📰 Latest AI News</h2>
+        <span class="group-count">6 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://aifunding.me/deals" target="_blank" rel="noopener noreferrer">
+        <h3>42AI emerges from stealth with $62.5 M for a behavior‑predicting world model</h3>
+        <p>AI startup 42AI, focusing on world models for human‑behavior prediction, raised $62.5 million in a seed round this week.</p>
+        <div class="meta"><span class="pill">AI Funding Tracker</span><span class="pill">November 2 2026</span></div>
+      </a>
+<a class="card" href="https://aifunding.me/deals" target="_blank" rel="noopener noreferrer">
+        <h3>Trajectory raises $45 million to democratize AI model training</h3>
+        <p>Trajectory secured $45 million, aiming to make AI model training accessible to non‑technical users at a $300 million valuation.</p>
+        <div class="meta"><span class="pill">AI Funding Tracker</span><span class="pill">November 2 2026</span></div>
+      </a>
+<a class="card" href="https://aifunding.me/deals" target="_blank" rel="noopener noreferrer">
+        <h3>Clark launches autonomous AI employees for audit, raises $11 million seed</h3>
+        <p>Clark introduced autonomous AI &#39;employees&#39; for audit tasks, raising $11 million in seed funding.</p>
+        <div class="meta"><span class="pill">AI Funding Tracker</span><span class="pill">November 2 2026</span></div>
+      </a>
+<a class="card" href="https://www.itpro.com/business/what-enterprises-can-learn-from-anthropics-ipo-prospectus-about-vendor-dependency" target="_blank" rel="noopener noreferrer">
+        <h3>Anthropic’s IPO prospectus reveals 83 % of revenue from token‑based consumption</h3>
+        <p>Anthropic is preparing to go public in late November, with 83 % of its first‑half 2026 revenue coming from per‑token usage.</p>
+        <div class="meta"><span class="pill">ITPro</span><span class="pill">6 days ago</span></div>
+      </a>
+<a class="card" href="https://www.tomshardware.com/software/github-report-highlights-massive-influx-of-ai-generated-code-sixfold-increase-in-activity-over-one-year-required-extra-4-million-cpu-cores-and-160pb-of-storage" target="_blank" rel="noopener noreferrer">
+        <h3>GitHub scales massively to handle AI‑generated code surge</h3>
+        <p>GitHub added 4 million CPU cores, 160 PB storage, and upgraded networking to manage a six‑fold increase in AI‑generated code activity.</p>
+        <div class="meta"><span class="pill">Tom’s Hardware</span><span class="pill">4 days ago</span></div>
+      </a>
+<a class="card" href="https://www.techradar.com/pro/scaling-smart-how-llm-developers-are-solving-multi-agent-orchestration-bottlenecks" target="_blank" rel="noopener noreferrer">
+        <h3>Developers focus on multi‑agent orchestration to overcome diminishing model returns</h3>
+        <p>With performance gains per doubling of model parameters declining, multi‑agent coordination is emerging as a key strategy for LLM developers.</p>
+        <div class="meta"><span class="pill">TechRadar</span><span class="pill">November 1 2026</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="agents">
+      <div class="group-header">
+        <h2>🤖 Trending AI Agents</h2>
+        <span class="group-count">6 items</span>
+      </div>
+      <div class="grid"><a class="card" href="#" target="_blank" rel="noopener noreferrer">
+        <h3>LangChain</h3>
+        <p>Leading AI agent orchestration framework widely used across surveys, downloads and stars. Top usage in 2026 developer survey, 170 million PyPI downloads in last month and ~148 000 GitHub stars.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.cihangirbozdogan.com/tools" target="_blank" rel="noopener noreferrer">
+        <h3>Claude‑mem</h3>
+        <p>Persistent memory layer for coding agents to retain context across sessions. Added nearly 6 000 stars this week, now at ~110 000 stars, trending in GitHub trending lists.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.cihangirbozdogan.com/tools" target="_blank" rel="noopener noreferrer">
+        <h3>ECC</h3>
+        <p>Performance toolkit for agent harnesses bundling skills, memory, security and workflows. Gained ~6 300 stars this week, total ~295 000 stars, major trending project.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.cihangirbozdogan.com/tools" target="_blank" rel="noopener noreferrer">
+        <h3>Superpowers</h3>
+        <p>Agent skills framework enforcing structured, disciplined workflows for coding agents. Picked up ~5 900 stars this week, total ~311 000, high momentum among agent‑skill repos.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://github.com/deepseek-ai/dsh-superagent-prototype" target="_blank" rel="noopener noreferrer">
+        <h3>dsh‑superagent‑prototype</h3>
+        <p>Proactive coding agent that watches repos and autonomously opens work items and delivers PRs. Fastest‑growing AI agent project on GitHub, +6 100 stars in one day.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://github.com/google-research/harness2" target="_blank" rel="noopener noreferrer">
+        <h3>google‑research/harness2</h3>
+        <p>Framework for building AI agents (Python) with rapid recent star growth. +22 100 stars gained in past 30 days, top trending &#39;ai‑agents&#39; repo this month.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="repos">
+      <div class="group-header">
+        <h2>⭐ Trending AI GitHub Repos</h2>
+        <span class="group-count">8 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://github.com/deepseek-ai/dsh-superagent-prototype" target="_blank" rel="noopener noreferrer">
+        <h3>deepseek‑ai/dsh‑superagent‑prototype</h3>
+        <p>Proactive coding agent that watches a GitHub repo and autonomously opens issues, works on them and submits pull requests.</p>
+        <div class="meta"><span class="pill">~13 100 (+6 100 in one day)</span><span class="pill lang">TypeScript</span></div>
+      </a>
+<a class="card" href="https://github.com/google-research/harness2" target="_blank" rel="noopener noreferrer">
+        <h3>google‑research/harness2</h3>
+        <p>Python framework for building AI agents, fastest star growth in past 30 days in ai‑agents topic.</p>
+        <div class="meta"><span class="pill">~22 100 gained this month</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://github.com/morluto/rea" target="_blank" rel="noopener noreferrer">
+        <h3>morluto/rea</h3>
+        <p>AI coding agent tool to reverse engineer apps, binaries, websites using MCP server and CLI.</p>
+        <div class="meta"><span class="pill">~422 900 total (+3 900 today)</span><span class="pill lang">TypeScript</span></div>
+      </a>
+<a class="card" href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer">
+        <h3>openclaw/openclaw</h3>
+        <p>Open‑source AI assistant that runs locally and integrates with chat apps like WhatsApp, Telegram, Slack.</p>
+        <div class="meta"><span class="pill">~393 700 total (+2 900 today)</span><span class="pill lang">TypeScript</span></div>
+      </a>
+<a class="card" href="https://github.com/nousresearch/hermes-agent" target="_blank" rel="noopener noreferrer">
+        <h3>nousresearch/hermes‑agent</h3>
+        <p>Self‑improving AI agent that writes its own skills and interacts via Telegram, Slack, or WhatsApp.</p>
+        <div class="meta"><span class="pill">~260 000 total (+2 300 this week)</span><span class="pill lang"></span></div>
+      </a>
+<a class="card" href="https://github.com/thedotmack/claude-mem" target="_blank" rel="noopener noreferrer">
+        <h3>thedotmack/claude‑mem</h3>
+        <p>Agent memory plugin for persistent context across sessions.</p>
+        <div class="meta"><span class="pill">~110 000 total (+13 900 in 30 days)</span><span class="pill lang">TypeScript</span></div>
+      </a>
+<a class="card" href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener noreferrer">
+        <h3>anthropics/claude‑code</h3>
+        <p>Anthropic’s coding agent allowing hand‑coding tasks to AI via terminal/editor/desktop.</p>
+        <div class="meta"><span class="pill">~154 000 total (+788 this week)</span><span class="pill lang"></span></div>
+      </a>
+<a class="card" href="https://github.com/onehumanbeing/esp32-iphone-agent" target="_blank" rel="noopener noreferrer">
+        <h3>onehumanbeing/esp32‑iphone‑agent</h3>
+        <p>AI model uses a real iPhone controlled via ESP32, with vision model and HID hands.</p>
+        <div class="meta"><span class="pill">~4 200 total (+4 200 in 30 days)</span><span class="pill lang">C</span></div>
+      </a></div>
+    </section>
+  
+    <footer class="page-footer">Generated automatically by the Daily AI News pipeline.</footer>
+  </div>
+</body>
+</html>
