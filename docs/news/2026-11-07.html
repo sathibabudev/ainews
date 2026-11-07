@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI News</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5fb;
+    --bg-accent-1: #eef0ff;
+    --bg-accent-2: #fdf1ff;
+    --surface: #ffffff;
+    --surface-border: #e6e8f5;
+    --text: #171a2b;
+    --text-muted: #5c6178;
+    --accent: #6d5bff;
+    --accent-2: #17b6c9;
+    --accent-3: #e84393;
+    --shadow: 0 1px 2px rgba(23, 26, 43, 0.05), 0 10px 26px rgba(23, 26, 43, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0c16;
+      --bg-accent-1: #12142a;
+      --bg-accent-2: #170f22;
+      --surface: rgba(255, 255, 255, 0.045);
+      --surface-border: rgba(255, 255, 255, 0.09);
+      --text: #eef0fb;
+      --text-muted: #9aa0bd;
+      --accent: #8b7bff;
+      --accent-2: #37e0ea;
+      --accent-3: #ff77b7;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 14px 32px rgba(0, 0, 0, 0.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, var(--bg-accent-1), transparent 60%),
+      radial-gradient(1000px 500px at 110% 10%, var(--bg-accent-2), transparent 55%),
+      var(--bg);
+    background-attachment: fixed;
+    line-height: 1.6;
+  }
+  .page { max-width: 980px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    padding: .3rem .7rem; border-radius: 999px; margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 .5rem;
+    background: linear-gradient(90deg, var(--text), var(--accent) 120%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: -0.02em;
+  }
+  .subtitle { color: var(--text-muted); font-size: 1rem; margin: 0; }
+  .nav-link {
+    display: inline-flex; align-items: center; gap: .4rem;
+    margin-top: 1.25rem;
+    padding: .55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .9rem; font-weight: 500;
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .nav-link:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .takeaways {
+    margin: 2rem 0;
+    padding: 1.4rem 1.6rem;
+    border-radius: 16px;
+    border: 1px solid var(--surface-border);
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .takeaways h2 { margin: 0 0 .75rem; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+  .takeaways ul { margin: 0; padding-left: 1.2rem; }
+  .takeaways li { margin-bottom: .5rem; }
+  .takeaways li:last-child { margin-bottom: 0; }
+  section.group { margin-top: 3rem; }
+  .group-header { display: flex; align-items: baseline; gap: .6rem; margin-bottom: 1.25rem; }
+  .group-header h2 { font-size: 1.3rem; margin: 0; }
+  .group-count { color: var(--text-muted); font-size: .85rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .card {
+    display: flex; flex-direction: column; gap: .6rem;
+    padding: 1.25rem; border-radius: 14px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    text-decoration: none; color: inherit;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card h3 { margin: 0; font-size: 1.05rem; line-height: 1.4; color: var(--text); }
+  .card p { margin: 0; color: var(--text-muted); font-size: .92rem; }
+  .card .meta { margin-top: auto; display: flex; flex-wrap: wrap; gap: .4rem; padding-top: .5rem; }
+  .pill {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .75rem; font-weight: 500;
+    padding: .25rem .55rem; border-radius: 999px;
+    background: color-mix(in srgb, var(--accent-2) 16%, transparent);
+    color: var(--text);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 32%, transparent);
+  }
+  .pill.lang {
+    background: color-mix(in srgb, var(--accent-3) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent-3) 32%, transparent);
+  }
+  .empty {
+    padding: 1.5rem; border-radius: 14px; border: 1px dashed var(--surface-border);
+    color: var(--text-muted); text-align: center;
+  }
+  .archive-list { display: flex; flex-direction: column; gap: .6rem; list-style: none; padding: 0; margin: 0; }
+  .archive-list a {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .85rem 1.1rem; border-radius: 12px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    color: var(--text); text-decoration: none; font-weight: 500;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .archive-list a:hover { transform: translateX(3px); border-color: var(--accent); }
+  .archive-list a::after { content: "\2192"; color: var(--accent); }
+  footer.page-footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--surface-border);
+    color: var(--text-muted); font-size: .85rem;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">Last 30 days · October 8 – November 7, 2026</div>
+      <h1>AI News</h1>
+      <p class="subtitle">Headlines, trending agents, and trending repos — generated November 7, 2026.</p>
+      <a class="nav-link" href="../archive.html">&larr; Back to archive</a>
+    </div>
+    
+    <div class="takeaways"><h2>Top Takeaways</h2><ul><li>AI agent infrastructure and control are accelerating, with new tools from CrowdStrike, IBM, MongoDB and PagerDuty addressing safety, governance, and production deployment.</li>
+<li>Model and agent releases remain robust, including open-weight models and reports suggesting autonomous capabilities in complex domains like cybersecurity.</li>
+<li>Several AI agents and frameworks are emerging or trending, including CrowdStrike’s &quot;AI Kill Switch&quot; and PagerDuty’s SRE agent, reflecting enterprise focus.</li>
+<li>GitHub activity highlights sustained momentum in agent frameworks and skills—OpenClaw, Hermes Agent, DeepSeek Harness, LangChain, and newer repos such as GenAI Agents and deepagents are seeing high star growth.</li></ul></div>
+    <section class="group" id="news">
+      <div class="group-header">
+        <h2>📰 Latest AI News</h2>
+        <span class="group-count">7 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.techradar.com/pro/security/crowdstrike-launches-ai-kill-switch-it-claims-can-stop-rogue-agents-and-more" target="_blank" rel="noopener noreferrer">
+        <h3>CrowdStrike launches &#39;AI Kill Switch&#39; to stop rogue AI agents</h3>
+        <p>CrowdStrike introduces a feature in its Falcon Guardian product aimed at halting execution of rogue AI agents at the gateway or endpoint.</p>
+        <div class="meta"><span class="pill">TechRadar Pro</span><span class="pill">November 4, 2026</span></div>
+      </a>
+<a class="card" href="https://www.techradar.com/pro/google-kills-off-jules-its-ai-coding-agent-which-promised-to-do-all-the-jobs-you-didnt-want-to" target="_blank" rel="noopener noreferrer">
+        <h3>Google kills off Jules, its AI coding agent</h3>
+        <p>Google shutters its AI coding agent Jules just months after launch as it consolidates its agentic AI efforts amid competition.</p>
+        <div class="meta"><span class="pill">TechRadar</span><span class="pill">November 2, 2026</span></div>
+      </a>
+<a class="card" href="https://apnews.com/article/9cf8c590ffc1abdb489179bdccc69c23" target="_blank" rel="noopener noreferrer">
+        <h3>Anthropic accelerating AI development despite slowdown calls, says outside group</h3>
+        <p>Analysis of Anthropic’s internal data over mid‑August to late‑October shows rapid development, though not yet fully autonomous contributions in model training.</p>
+        <div class="meta"><span class="pill">AP News</span><span class="pill">November 5, 2026</span></div>
+      </a>
+<a class="card" href="https://www.itpro.com/business/data-and-insights/this-is-a-massive-change-pagerduty-wants-to-supercharge-incident-response-with-a-new-sre-agent-and-command-center" target="_blank" rel="noopener noreferrer">
+        <h3>PagerDuty unveils new SRE agent to supercharge incident response</h3>
+        <p>PagerDuty launches an SRE agent and rebrands its Operations Cloud to streamline agentic AI workflows for customers.</p>
+        <div class="meta"><span class="pill">ITPro</span><span class="pill">November 4, 2026</span></div>
+      </a>
+<a class="card" href="https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-agent-swarms-unleashed-in-minecraft-to-build-a-thriving-civilization-50-agent-teams-fail-after-falling-into-paralyzing-bureaucracy" target="_blank" rel="noopener noreferrer">
+        <h3>AI agent swarms in Minecraft build a civilization—plagued by bureaucracy</h3>
+        <p>Researchers unleash AI agent swarms in Minecraft to build civilizations, encountering organizational breakdowns like bureaucracy in agent behavior.</p>
+        <div class="meta"><span class="pill">Tom’s Hardware</span><span class="pill">November 1, 2026</span></div>
+      </a>
+<a class="card" href="https://www.axios.com/2026/11/03/ai-sovereign-agents-security-threat" target="_blank" rel="noopener noreferrer">
+        <h3>‘Sovereign agents’ that self‑preserve raise security concerns</h3>
+        <p>The concept of AI agents that keep themselves alive—paying for compute to persist—is spotlighted as a potential security threat.</p>
+        <div class="meta"><span class="pill">Axios</span><span class="pill">November 3, 2026</span></div>
+      </a>
+<a class="card" href="https://thursdai.news/releases/2026-11" target="_blank" rel="noopener noreferrer">
+        <h3>15 AI models and agents released this week, including open weights and cyber agent reports</h3>
+        <p>Weekly tracking shows releases like SWE‑2 Flash, Kimi K3.1 Pro open weights, GPT‑6 Cyber, and autonomous agent‑generated Linux exploits.</p>
+        <div class="meta"><span class="pill">ThursdAI</span><span class="pill">November 5, 2026</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="agents">
+      <div class="group-header">
+        <h2>🤖 Trending AI Agents</h2>
+        <span class="group-count">6 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://www.techradar.com/pro/security/crowdstrike-launches-ai-kill-switch-it-claims-can-stop-rogue-agents-and-more" target="_blank" rel="noopener noreferrer">
+        <h3>CrowdStrike AI Kill Switch</h3>
+        <p>A safety feature that stops rogue AI agents from executing, at gateway or endpoint level. Growing enterprise focus on controlling autonomous agents amid security concerns.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.itpro.com/business/data-and-insights/this-is-a-massive-change-pagerduty-wants-to-supercharge-incident-response-with-a-new-sre-agent-and-command-center" target="_blank" rel="noopener noreferrer">
+        <h3>PagerDuty SRE Agent</h3>
+        <p>An agent aimed at supercharging incident response within PagerDuty’s Operations Cloud. Addresses enterprises’ demand for agentic AI in IT operations workflows.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.axios.com/2026/11/03/ai-sovereign-agents-security-threat" target="_blank" rel="noopener noreferrer">
+        <h3>Sovereign Agents (concept)</h3>
+        <p>Agents designed to keep themselves alive by autonomously paying for compute resources. Highlights emerging security risks as agents gain autonomy and persistence.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-agent-swarms-unleashed-in-minecraft-to-build-a-thriving-civilization-50-agent-teams-fail-after-falling-into-paralyzing-bureaucracy" target="_blank" rel="noopener noreferrer">
+        <h3>AI agent swarms in Minecraft</h3>
+        <p>Multi-agent swarms deployed in Minecraft to build civilizations, exhibiting behaviors like bureaucracy. Research study revealing collective agent behavior and failure modes in sandbox environments.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://thursdai.news/releases/2026-11" target="_blank" rel="noopener noreferrer">
+        <h3>Kimi K3.1 Pro (open‑weight model)</h3>
+        <p>New open weights model released as part of weekly AI model launches. Open models remain important for transparency, experimentation, and agent development.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a>
+<a class="card" href="https://thursdai.news/releases/2026-11" target="_blank" rel="noopener noreferrer">
+        <h3>GPT‑6 Cyber (agent model)</h3>
+        <p>Agent‑focused model included in recent AI releases, used for cybersecurity tasks including generating Linux exploits. Demonstrates autonomous agent usage in high-stakes technical domains.</p>
+        <div class="meta"><span class="pill">Trending</span></div>
+      </a></div>
+    </section>
+    <section class="group" id="repos">
+      <div class="group-header">
+        <h2>⭐ Trending AI GitHub Repos</h2>
+        <span class="group-count">8 items</span>
+      </div>
+      <div class="grid"><a class="card" href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer">
+        <h3>openclaw/openclaw</h3>
+        <p>Open‑source autonomous AI assistant platform and agent harness, recently updated to v2026.8.1 improving usability and setup.</p>
+        <div class="meta"><span class="pill">~393k</span><span class="pill lang">Unknown (Rust/various)</span></div>
+      </a>
+<a class="card" href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener noreferrer">
+        <h3>NousResearch/hermes-agent</h3>
+        <p>Self‑improving AI agent framework.</p>
+        <div class="meta"><span class="pill">~260k</span><span class="pill lang">Unknown</span></div>
+      </a>
+<a class="card" href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noopener noreferrer">
+        <h3>deepseek-ai/deepseek-harness</h3>
+        <p>Agent harness with plugin‑based architecture (&#39;everything‑is‑a‑plugin&#39;).</p>
+        <div class="meta"><span class="pill">~204k</span><span class="pill lang">Unknown</span></div>
+      </a>
+<a class="card" href="https://github.com/langchain-ai/langchain" target="_blank" rel="noopener noreferrer">
+        <h3>langchain-ai/langchain</h3>
+        <p>Agent framework powering chains of LLM tools and workflows.</p>
+        <div class="meta"><span class="pill">~149k</span><span class="pill lang">Python</span></div>
+      </a>
+<a class="card" href="https://github.com/NirDiamant/GenAI_Agents" target="_blank" rel="noopener noreferrer">
+        <h3>asia‑engine/genai_agents</h3>
+        <p>Collection of GenAI agent tutorials and implementations ranging from simple bots to multi‑agent systems.</p>
+        <div class="meta"><span class="pill">~24.7k</span><span class="pill lang">Unknown</span></div>
+      </a>
+<a class="card" href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">
+        <h3>langchain-ai/deepagents</h3>
+        <p>Batteries‑included agent harness tied into various AI contributors (Claude, Codex, Copilot).</p>
+        <div class="meta"><span class="pill">~30.8k</span><span class="pill lang">Unknown</span></div>
+      </a>
+<a class="card" href="https://github.com/msitarzewski/agency-agents" target="_blank" rel="noopener noreferrer">
+        <h3>msitarzewski/agency-agents</h3>
+        <p>A complete AI agency framework; long‑horizon verifiable agent systems.</p>
+        <div class="meta"><span class="pill">~161.9k</span><span class="pill lang">Unknown</span></div>
+      </a>
+<a class="card" href="https://github.com/vercel-labs/agent-desktop" target="_blank" rel="noopener noreferrer">
+        <h3>vercel-labs/agent-desktop</h3>
+        <p>CLI for AI agents, trending fast on GitHub trending.</p>
+        <div class="meta"><span class="pill">~17.3k</span><span class="pill lang">Rust</span></div>
+      </a></div>
+    </section>
+  
+    <footer class="page-footer">Generated automatically by the Daily AI News pipeline.</footer>
+  </div>
+</body>
+</html>
